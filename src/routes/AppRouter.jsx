@@ -4,6 +4,7 @@ import Register from "../pages/auth/Register";
 import Dashboard from "../pages/dashboard/Dashboard";
 import AuthLayout from "../layouts/AuthLayout";
 import DashboardLayout from "../layouts/DashboardLayout";
+import ProtectedRoute from "./ProtectedRoute";
 
 export default function AppRouter() {
   return (
@@ -17,7 +18,10 @@ export default function AppRouter() {
 
         {/* Layout Dashboard */}
         <Route element={<DashboardLayout />}>
-          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/dashboard" element={
+            <ProtectedRoute>
+            <Dashboard />
+            </ProtectedRoute>} />
         </Route>
       </Routes>
     </BrowserRouter>
