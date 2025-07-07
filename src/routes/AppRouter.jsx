@@ -11,7 +11,9 @@ export default function AppRouter() {
   return (
     <BrowserRouter>
       <Routes>
+        {/* Navigate / to /dashboard instead */}
         <Route path="/" element={<Navigate to="/dashboard" replace />} />
+
         {/* Layout Auth Login & Register */}
         <Route element={<AuthLayout />}>
           <Route path="/login" element={<Login />} />
