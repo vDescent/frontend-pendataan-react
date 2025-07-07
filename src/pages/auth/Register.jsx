@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { register } from "../../services/AuthService";
+import { useNavigate, Link } from "react-router-dom";
 
 export default function Register() {
   const [form, setForm] = useState({
@@ -8,14 +10,21 @@ export default function Register() {
     confirmPassword: "",
   });
 
+  const navigate = useNavigate();
+
   const handleChange = (e) => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Register:", form);
-    // nanti panggil register(form)
+    try {
+      await register(form);
+      alert("Registrasi berhasil!");
+      navigate("/login");
+    } catch (err) {
+      alert("Registrasi gagal: " + err.response?.data?.message || err.message);
+    }
   };
 
   return (
@@ -61,6 +70,12 @@ export default function Register() {
           Register
         </button>
       </form>
+      <p className="mt-4 text-center">
+        Sudah punya akun?{" "}
+        <Link to="/login" className="text-blue-600 hover:underline">
+          Go to Login
+        </Link>
+      </p>
     </div>
   );
 }

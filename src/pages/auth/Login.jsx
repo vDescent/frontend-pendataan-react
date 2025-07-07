@@ -1,13 +1,21 @@
 import { useState } from "react";
+import { login } from "../../services/AuthService";
+import { useNavigate, Link } from "react-router-dom";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Login:", { email, password });
-    // nanti panggil login(email, password)
+    try {
+      await login(email, password);
+      alert("Login sukses!");
+      navigate("/dashboard");
+    } catch (err) {
+      alert("Login gagal: " + err.response?.data?.message || err.message);
+    }
   };
 
   return (
@@ -35,6 +43,11 @@ export default function Login() {
           Login
         </button>
       </form>
+        <p className="mt-4 text-center">
+      <Link to="/register" className="text-blue-600 hover:underline">
+        Go to Register
+      </Link>
+    </p>
     </div>
   );
 }

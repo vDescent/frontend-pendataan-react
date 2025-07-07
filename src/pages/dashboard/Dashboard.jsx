@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 export default function Dashboard() {
   return (
     <div>
@@ -9,6 +11,19 @@ export default function Dashboard() {
         <li>Tambah data manual</li>
         <li>Cari dan tampilkan data</li>
         <li>Edit data</li>
+              <p className="mt-4 text-center">
+        Sudah punya akun?{" "}
+        <Link to="/login" className="text-blue-600 hover:underline">
+          Go to Login
+        </Link>
+      </p>
+
+            <p className="mt-4 text-center">
+        Sudah punya akun?{" "}
+        <Link to="/register" className="text-blue-600 hover:underline">
+          Go to Register
+        </Link>
+      </p>
       </ul>
     </div>
   );
