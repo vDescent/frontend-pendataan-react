@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { getRecentStaff } from "../../services/staffService";
+import { useNavigate } from "react-router-dom";
 
 export default function Dashboard() {
+  const navigate = useNavigate();
   const [staff, setStaff] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -21,6 +23,11 @@ export default function Dashboard() {
 
     fetchData();
   }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("token"); 
+    navigate("/login");
+  };
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p className="text-red-500">{error}</p>;
@@ -58,6 +65,12 @@ export default function Dashboard() {
           </tbody>
         </table>
       </div>
+      <button
+      onClick={handleLogout}
+      className="bg-red-600 text-white px-3 py-2 rounded hover:bg-red-700"
+    >
+      Logout
+    </button>
     </div>
   );
 }
