@@ -37,8 +37,8 @@ export default function AppRouter() {
           <Route path="upload" element={<UploadExcel />} />
           <Route path="add-data" element={<AddData />} />
           <Route path="manage" element={<ManageStaff />} />
-          <Route path="display-data" element={<DisplayData />} />
-          <Route path="edit-data" element={<EditData />} />
+          <Route path="display-data/:id" element={<DisplayData />} />
+          <Route path="edit-data/:id" element={<EditData />} />
         </Route>
 
         {/* Redirect unknown routes to login */}
