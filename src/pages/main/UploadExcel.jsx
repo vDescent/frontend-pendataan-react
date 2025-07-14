@@ -1,70 +1,34 @@
 import { useState } from "react";
-import axios from "axios";
 
-export default function UploadExcel() {
-  const [file, setFile] = useState(null);
-  const [status, setStatus] = useState("");
-  const [loading, setLoading] = useState(false);
-
-  const handleFileChange = (e) => {
-    setFile(e.target.files[0]);
-    setStatus("");
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!file) {
-      alert("Silakan pilih file terlebih dahulu");
-      return;
-    }
-
-    const formData = new FormData();
-    formData.append("file", file);
-
-    try {
-      setLoading(true);
-      const response = await axios.post("http://localhost:5077/api/staff/upload/excel", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
-
-      setStatus(response.data || "Upload berhasil");
-      setFile(null);
-    } catch (err) {
-      console.error(err);
-      setStatus("Upload gagal: " + (err.response?.data?.message || err.message));
-    } finally {
-      setLoading(false);
-    }
-  };
+export default function UploadExcelPage() {
+  const [uploadProgress, setUploadProgress] = useState(50);
+  const [fileName, setFileName] = useState("StaffData1.XLSX");
 
   return (
-    <div>
-      <h1 className="text-2xl font-bold mb-4">Upload Excel</h1>
+    <div className="bg-[#2e2b30] text-white rounded-lg p-6 border border-[#444]">
+      <h1 className="text-2xl font-bold mb-6">Upload Excel File</h1>
+      <div className="border-2 border-dashed border-purple-400 rounded-lg p-12 flex flex-col items-center justify-center bg-[#1f1d23] mb-6">
+        <div className="text-5xl mb-4">📤</div>
+        <p className="text-lg mb-2">Drag and Drop File to Upload</p>
+        <p className="text-sm mb-4 text-gray-400">or</p>
+        <button className="bg-[#5a3e8b] hover:bg-[#6d4fa7] text-white font-semibold px-6 py-2 rounded">Browse Files</button>
+        <p className="text-xs text-gray-400 mt-4">Max file size: <strong>10MB</strong></p>
+        <p className="text-xs text-gray-400">Supported file types: <strong>XLSX, XLS</strong></p>
+      </div>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <input
-          type="file"
-          accept=".xlsx"
-          onChange={handleFileChange}
-          className="block w-full text-sm text-gray-500
-          file:mr-4 file:py-2 file:px-4
-          file:rounded-md file:border-0
-          file:text-sm file:font-semibold
-          file:bg-blue-50 file:text-blue-700
-          hover:file:bg-blue-100"
-        />
-        <button
-          type="submit"
-          className="bg-blue-600 text-white px-4 py-2 rounded disabled:bg-gray-400"
-          disabled={loading}
-        >
-          {loading ? "Mengupload..." : "Upload"}
-        </button>
-      </form>
-
-      {status && <p className="mt-4">{status}</p>}
+      <div className="bg-[#1f1d23] rounded-md p-4 flex items-center justify-between">
+        <div className="flex items-center space-x-2">
+          <div className="text-purple-300">⏳</div>
+          <span className="text-sm">{fileName}</span>
+        </div>
+        <div className="flex items-center space-x-4 w-1/2">
+          <div className="w-full bg-gray-700 h-2 rounded">
+            <div className="bg-purple-400 h-2 rounded" style={{ width: `${uploadProgress}%` }}></div>
+          </div>
+          <span className="text-sm text-purple-300">{uploadProgress}%</span>
+          <button className="text-red-400 text-xl hover:text-red-600">✖</button>
+        </div>
+      </div>
     </div>
   );
 }

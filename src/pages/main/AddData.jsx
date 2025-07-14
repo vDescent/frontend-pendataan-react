@@ -1,4 +1,4 @@
-import StaffForm from "../../components/common/staffForm";
+import StaffForm from "../../components/form/staffForm";
 import axios from "axios";
 
 const initialData = {
@@ -31,8 +31,8 @@ export default function AddData() {
   };
 
   return (
-    <div className="p-6 max-w-5xl mx-auto">
-      <h1 className="text-2xl font-bold mb-6">Tambah Data Staff</h1>
+    <div className="p-6 max-w-12xl mx-auto">
+      <h1 className="text-2xl font-bold mb-6">Add Data</h1>
       <StaffForm initialData={initialData} onSubmit={handleSubmit} />
     </div>
   );
