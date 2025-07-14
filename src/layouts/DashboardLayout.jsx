@@ -72,7 +72,7 @@ export default function DashboardLayout() {
               <NavLink
                 to="/dashboard/manage"
                 className={({ isActive }) =>
-                  `flex items-center px-4 py-2 rounded transition ${isActive ? 'bg-[#311B4B]' : 'hover:bg-[#311B4B]'}`
+                  `flex items-center px-4 py-2 rounded-3xl transition ${isActive ? 'bg-[#311B4B]' : 'hover:bg-[#311B4B]'}`
                 }
               >
                 <BsPersonFillGear className="mr-2 text-lg"/>
@@ -84,7 +84,7 @@ export default function DashboardLayout() {
         </aside>
 
         {/* Page Content */}
-        <main className="flex-1 bg-[#2e2b30] p-8 overflow-auto">
+        <main className="flex-1 bg-[#2e2b30] overflow-auto">
           <Outlet />
         </main>
       </div>
