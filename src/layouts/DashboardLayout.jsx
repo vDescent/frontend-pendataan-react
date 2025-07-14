@@ -1,5 +1,6 @@
 import { NavLink, Outlet } from "react-router-dom";
-import { RiDashboardFill } from "react-icons/ri";
+import { RiDashboardFill, RiFile2Fill, RiAddBoxLine} from "react-icons/ri";
+import { BsPersonFillGear } from "react-icons/bs";
 
 export default function DashboardLayout() {
   return (
@@ -53,26 +54,29 @@ export default function DashboardLayout() {
               <NavLink
                 to="/dashboard/upload"
                 className={({ isActive }) =>
-                  `block px-4 py-2 rounded transition ${isActive ? 'bg-[#311B4B]' : 'hover:bg-[#311B4B]'}`
+                  `flex items-center px-4 py-2 rounded-3xl transition ${isActive ? 'bg-[#311B4B]' : 'hover:bg-[#311B4B]'}`
                 }
               >
-                📤 Upload Excel File
+                <RiFile2Fill className="mr-2 text-lg" />
+                Upload Excel File
               </NavLink>
               <NavLink
                 to="/dashboard/add-data"
                 className={({ isActive }) =>
-                  `block px-4 py-2 rounded transition ${isActive ? 'bg-[#311B4B]' : 'hover:bg-[#311B4B]'}`
+                  `flex items-center px-4 py-2 rounded-3xl transition ${isActive ? 'bg-[#311B4B]' : 'hover:bg-[#311B4B]'}`
                 }
               >
-                ➕ Add Staff Data
+                <RiAddBoxLine className="mr-2 text-lg"/>
+                Add Staff Data
               </NavLink>
               <NavLink
                 to="/dashboard/manage"
                 className={({ isActive }) =>
-                  `block px-4 py-2 rounded transition ${isActive ? 'bg-[#311B4B]' : 'hover:bg-[#311B4B]'}`
+                  `flex items-center px-4 py-2 rounded transition ${isActive ? 'bg-[#311B4B]' : 'hover:bg-[#311B4B]'}`
                 }
               >
-                🗂️ Manage Staff Data
+                <BsPersonFillGear className="mr-2 text-lg"/>
+                Manage Staff Data
               </NavLink>
             </nav>
 
