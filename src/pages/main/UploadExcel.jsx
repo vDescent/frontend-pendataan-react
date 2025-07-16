@@ -50,7 +50,7 @@ export default function UploadExcelPage() {
         <p className="text-sm mb-4 text-gray-400">or</p>
         <button
           onClick={handleBrowseClick}
-          className="bg-[#3D2C51] hover:bg-[#6d4fa7] text-white font-semibold px-6 py-2 rounded-3xl border border-[#9C94E8]"
+          className="bg-[#3D2C51] hover:bg-[#6d4fa7] text-white font-semibold px-6 py-2 rounded-3xl border-2 border-[#9C94E8]"
         >
           Browse Files
         </button>
@@ -76,7 +76,7 @@ export default function UploadExcelPage() {
 
         <button
           onClick={handleUpload}
-          className="bg-[#3D2C51] hover:bg-[#6d4fa7] text-white font-semibold px-6 py-2 my-2 rounded-3xl border border-[#9C94E8]"
+          className="bg-[#3D2C51] hover:bg-[#6d4fa7] text-white font-semibold px-6 py-2 my-2 rounded-3xl border-2 border-[#9C94E8]"
         >
           Upload
         </button>
