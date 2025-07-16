@@ -16,11 +16,11 @@ export default function StaffForm({ initialData, onSubmit, buttonText = "Add Dat
     setLoading(true);
     try {
       await onSubmit(formData);
-      setStatus("✅ Data berhasil ditambahkan!");
+      setStatus("Data berhasil ditambahkan!");
       setFormData(initialData);
     } catch (err) {
       console.error(err);
-      setStatus("❌ Gagal menambahkan data: " + (err.response?.data?.message || err.message));
+      setStatus("Gagal menambahkan data: " + (err.response?.data?.message || err.message));
     } finally {
       setLoading(false);
     }
