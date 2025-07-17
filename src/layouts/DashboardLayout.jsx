@@ -84,7 +84,7 @@ export default function DashboardLayout() {
         </aside>
 
         {/* Page Content */}
-        <main className="flex-1 bg-[#2e2b30] overflow-auto">
+        <main className="flex-1 bg-[#39363b] overflow-auto">
           <Outlet />
         </main>
       </div>

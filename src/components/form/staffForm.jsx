@@ -60,7 +60,7 @@ export default function StaffForm({ initialData = {}, onSubmit, buttonText = "Ad
 
   return (
     <div className="m-4">
-      <form onSubmit={handleSubmit} className="bg-[#1e1e2f] text-white p-6 rounded-lg space-y-10">
+      <form onSubmit={handleSubmit} className="bg-[#39363b] text-white p-6 rounded-lg space-y-10 mx-4">
         {/* General Data */}
         <section>
           <h2 className="text-lg font-semibold mb-4">General Data</h2>
