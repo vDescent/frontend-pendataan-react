@@ -1,4 +1,3 @@
-// components/form/StaffForm.jsx
 import { useEffect, useState } from "react";
 import TextInput from "../common/TextInput";
 import RadioGroup from "../common/RadioGroup";
@@ -60,62 +59,59 @@ export default function StaffForm({ initialData = {}, onSubmit, buttonText = "Ad
 
   return (
     <div className="m-4">
-      <form onSubmit={handleSubmit} className="bg-[#39363b] text-white p-6 rounded-lg space-y-10 mx-4">
-        {/* General Data */}
-        <section>
-          <h2 className="text-lg font-semibold mb-4">General Data</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <form onSubmit={handleSubmit} className="bg-[#39363b] text-white p-6 rounded-lg mx-4 space-y-6">
+        <h2 className="text-2xl font-semibold mb-4">Staff Data Form</h2>
+
+        {/* MAIN WRAPPER GRID: dua kolom dengan garis vertikal lurus */}
+        <div className="hidden md:grid md:grid-cols-2 md:divide-x md:gap-6">
+          {/* LEFT COLUMN */}
+          <div className="pr-6 space-y-6">
+            <p className="text-xl mb-2 font-medium">GENERAL Data</p>
             <TextInput label="1. Full Name" name="fullName" value={formData.fullName} onChange={handleChange} />
             <DateInput label="2. Birth Date" name="dateOfBirth" value={formData.dateOfBirth} onChange={handleChange} />
             <RadioGroup label="3. Gender" name="gender" options={["Male", "Female"]} selected={formData.gender} onChange={handleChange} />
             <TextInput label="4. Phone Number (WhatsApp)" name="phoneNumber" value={formData.phoneNumber} onChange={handleChange} />
-          </div>
-        </section>
 
-        {/* Academic Info */}
-        <section>
-          <h2 className="text-lg font-semibold mb-4">Academic Info</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <TextInput label="5. NIM" name="nim" value={formData.nim} onChange={handleChange} />
-            <TextInput label="6. Binusian ID" name="binusianId" value={formData.binusianId} onChange={handleChange} />
-            <TextInput label="7. Email" name="email" value={formData.email} onChange={handleChange} />
-            <TextInput label="8. Active Semester" name="activeSemester" value={formData.activeSemester} onChange={handleChange} />
+            <p className="text-xl mb-2 font-medium">BINUSIAN Data</p>
+            <TextInput label="5. Nomor Induk Mahasiswa (NIM)" name="nim" value={formData.nim} onChange={handleChange} />
+            <TextInput label="6. Binusian ID" name="binusianId" value={formData.binusianId} onChange={handleChange} />  
+            <TextInput label="7. Email Address (binus.edu or binus.ac.id for those who don't have one)" name="email" value={formData.email} onChange={handleChange} />
+            <TextInput label="8. Active Semester (Counting Even Semester Period - February)" name="activeSemester" value={formData.activeSemester} onChange={handleChange} />
             <TextInput label="9. Binusian Status" name="binusianStatus" value={formData.binusianStatus} onChange={handleChange} />
-            <DateInput label="10. Start Date" name="startDate" value={formData.startDate} onChange={handleChange} />
             <DateInput label="11. End Date" name="endDate" value={formData.endDate} onChange={handleChange} />
-          </div>
-        </section>
-
-        {/* Identity Info */}
-        <section>
-          <h2 className="text-lg font-semibold mb-4">Identity Info</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <TextInput label="12. NIK" name="nik" value={formData.nik} onChange={handleChange} />
-            <TextInput label="13. Address" name="address" value={formData.address} onChange={handleChange} />
             <TextInput label="14. NPWP" name="npwp" value={formData.npwp} onChange={handleChange} />
-          </div>
-        </section>
-
-        {/* Bank Info */}
-        <section>
-          <h2 className="text-lg font-semibold mb-4">Bank Info</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <TextInput label="15. Bank Account Number" name="bankAccountNumber" value={formData.bankAccountNumber} onChange={handleChange} />
-            <TextInput label="16. Bank Branch" name="bankBranch" value={formData.bankBranch} onChange={handleChange} />
             <TextInput label="17. Account Holder Name" name="accountHolderName" value={formData.accountHolderName} onChange={handleChange} />
-          </div>
-        </section>
-
-        {/* Emergency Contact */}
-        <section>
-          <h2 className="text-lg font-semibold mb-4">Emergency Contact</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <TextInput label="18. Parent / Guardian Name" name="parentGuardianName" value={formData.parentGuardianName} onChange={handleChange} />
-            <TextInput label="19. Parent / Guardian Phone" name="parentGuardianPhone" value={formData.parentGuardianPhone} onChange={handleChange} />
             <TextInput label="20. Emergency Contact" name="emergencyContact" value={formData.emergencyContact} onChange={handleChange} />
+          </div>
+
+          {/* RIGHT COLUMN */}
+          <div className="pl-6 space-y-6">
+            <h3 className="text-lg font-semibold invisible">Spacer</h3>
+            <DateInput label="10. Start Date" name="startDate" value={formData.startDate} onChange={handleChange} />
+            <TextInput label="13. Address" name="address" value={formData.address} onChange={handleChange} />
+            <TextInput label="16. Bank Branch" name="bankBranch" value={formData.bankBranch} onChange={handleChange} />
+            <TextInput label="19. Parent / Guardian Phone" name="parentGuardianPhone" value={formData.parentGuardianPhone} onChange={handleChange} />
             <TextInput label="21. Emergency Relation" name="emergencyRelation" value={formData.emergencyRelation} onChange={handleChange} />
           </div>
-        </section>
+        </div>
+
+        {/* MOBILE VERSION: 1 kolom */}
+        <div className="md:hidden space-y-6">
+          {Object.entries(formData).map(([key, value]) => {
+            if (key === "gender") {
+              return <RadioGroup key={key} label={key} name={key} options={["Male", "Female"]} selected={value} onChange={handleChange} />;
+            }
+            const isDateField = ["dateOfBirth", "startDate", "endDate"].includes(key);
+            const label = key
+              .replace(/([A-Z])/g, " $1")
+              .replace(/^./, (str) => str.toUpperCase());
+            const InputComponent = isDateField ? DateInput : TextInput;
+            return <InputComponent key={key} label={label} name={key} value={value} onChange={handleChange} />;
+          })}
+        </div>
 
         {/* Buttons */}
         <div className="flex justify-end gap-4">
@@ -135,9 +131,7 @@ export default function StaffForm({ initialData = {}, onSubmit, buttonText = "Ad
           </button>
         </div>
 
-        {status && (
-          <p className="mt-4 text-center font-medium text-white">{status}</p>
-        )}
+        {status && <p className="mt-4 text-center font-medium text-white">{status}</p>}
       </form>
     </div>
   );
