@@ -77,24 +77,27 @@ export default function StaffForm({ initialData = {}, onSubmit, buttonText = "Ad
             <TextInput label="6. Binusian ID" name="binusianId" value={formData.binusianId} onChange={handleChange} />  
             <TextInput label="7. Email Address (binus.edu or binus.ac.id for those who don't have one)" name="email" value={formData.email} onChange={handleChange} />
             <TextInput label="8. Active Semester (Counting Even Semester Period - February)" name="activeSemester" value={formData.activeSemester} onChange={handleChange} />
-            <TextInput label="9. Binusian Status" name="binusianStatus" value={formData.binusianStatus} onChange={handleChange} />
+            <RadioGroup label="9. Binusian Status" name="binusianStatus" options={["Associate Member (AM)", "Associate Member (AM) / Junior Staff under", "Non-Associate Member (Non-AM)"]} selected={formData.binusianStatus} onChange={handleChange} direction="column"/>
+            <DateInput label="10. Start Date" name="startDate" value={formData.startDate} onChange={handleChange} />
             <DateInput label="11. End Date" name="endDate" value={formData.endDate} onChange={handleChange} />
-            <TextInput label="12. NIK" name="nik" value={formData.nik} onChange={handleChange} />
-            <TextInput label="14. NPWP" name="npwp" value={formData.npwp} onChange={handleChange} />
-            <TextInput label="15. Bank Account Number" name="bankAccountNumber" value={formData.bankAccountNumber} onChange={handleChange} />
-            <TextInput label="17. Account Holder Name" name="accountHolderName" value={formData.accountHolderName} onChange={handleChange} />
-            <TextInput label="18. Parent / Guardian Name" name="parentGuardianName" value={formData.parentGuardianName} onChange={handleChange} />
-            <TextInput label="20. Emergency Contact" name="emergencyContact" value={formData.emergencyContact} onChange={handleChange} />
           </div>
 
           {/* RIGHT COLUMN */}
           <div className="pl-6 space-y-6">
-            <h3 className="text-lg font-semibold invisible">Spacer</h3>
-            <DateInput label="10. Start Date" name="startDate" value={formData.startDate} onChange={handleChange} />
-            <TextInput label="13. Address" name="address" value={formData.address} onChange={handleChange} />
-            <TextInput label="16. Bank Branch" name="bankBranch" value={formData.bankBranch} onChange={handleChange} />
-            <TextInput label="19. Parent / Guardian Phone" name="parentGuardianPhone" value={formData.parentGuardianPhone} onChange={handleChange} />
-            <TextInput label="21. Emergency Relation" name="emergencyRelation" value={formData.emergencyRelation} onChange={handleChange} />
+            {/* <h3 className="text-lg font-semibold invisible">Spacer</h3>  */}
+            <p className="text-xl mb-2 font-medium">Legal / Citizen Data</p>
+            <TextInput label="12. Nomor Induk Kewarganegaraan (NIK) KTP " name="nik" value={formData.nik} onChange={handleChange} />
+            <TextInput label="13. Domisili (Sesuai KTP)" name="address" value={formData.address} onChange={handleChange} />
+            <TextInput label="14. No NPWP (Must be made)" name="npwp" value={formData.npwp} onChange={handleChange} />
+            <p className="text-xl mb-2 font-medium">Bank Account Data</p>
+            <TextInput label="15. BCA Account Number" name="bankAccountNumber" value={formData.bankAccountNumber} onChange={handleChange} />
+            <TextInput label="16. BCA Bank Branch Account Opening (Example: KCP Bina Nusantara)" name="bankBranch" value={formData.bankBranch} onChange={handleChange} />
+            <TextInput label="17. BCA Account Holder Name" name="accountHolderName" value={formData.accountHolderName} onChange={handleChange} />
+            <p className="text-xl mb-2 font-medium">Relative Data</p>
+            <TextInput label="18. Parent / Guardian's Name" name="parentGuardianName" value={formData.parentGuardianName} onChange={handleChange} />
+            <TextInput label="19. Parent/Guardian Phone Number" name="emergencyContact" value={formData.emergencyContact} onChange={handleChange} />
+            <TextInput label="20. Emergency Contact Number" name="emergencyContact" value={formData.emergencyContact} onChange={handleChange} />
+            <TextInput label="21. Relationship with Emergency Contact" name="emergencyRelation" value={formData.emergencyRelation} onChange={handleChange} />
           </div>
         </div>
 
