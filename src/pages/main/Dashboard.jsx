@@ -8,6 +8,7 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
+
   useEffect(() => {
     async function fetchData() {
       try {
@@ -24,10 +25,10 @@ export default function Dashboard() {
     fetchData();
   }, []);
 
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    navigate("/login");
-  };
+  // const handleLogout = () => {
+  //   localStorage.removeItem("token");
+  //   navigate("/login");
+  // };
 
   if (loading) return <p className="text-white">Loading...</p>;
   if (error) return <p className="text-red-500">{error}</p>;
@@ -70,12 +71,12 @@ export default function Dashboard() {
         </table>
       </div>
 
-      <button
+      {/* <button
         onClick={handleLogout}
         className="mt-6 bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition"
       >
         Logout
-      </button>
+      </button> */}
     </div>
   );
 }

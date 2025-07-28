@@ -3,7 +3,7 @@ import StaffForm from "../../components/form/staffForm";
 import axios from "axios";
 import { useMemo } from "react";
 
-// ✅ Gunakan useMemo untuk mencegah initialData dibuat ulang setiap render
+// ✅ useMemo untuk mencegah initialData dibuat ulang setiap render
 export default function AddData() {
   const initialData = useMemo(() => ({
     fullName: "",
@@ -27,7 +27,7 @@ export default function AddData() {
     emergencyRelation: "",
     startDate: "",
     endDate: "",
-  }), []); // ⬅️ hanya dibuat sekali
+  }), []); // buat sekali
 
   const handleSubmit = async (data) => {
     try {
@@ -40,7 +40,7 @@ export default function AddData() {
 
   return (
     <div className="max-w-12xl mx-auto">
-      <h1 className="text-2xl font-thin m-4">Dashboard</h1>
+      <h1 className="text-2xl font-thin m-4">Add Data</h1>
       <hr className="border-t border-gray-600 mb-6" />
       <StaffForm initialData={initialData} onSubmit={handleSubmit} />
     </div>

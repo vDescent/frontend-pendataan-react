@@ -1,16 +1,17 @@
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import DoubleConfirmModal from "../../components/modal/DoubleConfirm";
 
 export default function ManageStaff() {
   const [keywordName, setKeywordName] = useState("");
   const [keywordNIM, setKeywordNIM] = useState("");
   const [results, setResults] = useState([]);
-  const [selectedStaff, setSelectedStaff] = useState(null);
   const [actionType, setActionType] = useState(""); // terminate | unterminate
-  const [showModal, setShowModal] = useState(false);
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [terminateStep, setTerminateStep] = useState(0);
+  const [staffToTerminate, setStaffToTerminate] = useState(null);
   const [staffToDelete, setStaffToDelete] = useState(null);
+  const [deleteStep, setDeleteStep] = useState(0);
   const navigate = useNavigate();
 
   const searchByName = async () => {
@@ -34,30 +35,6 @@ export default function ManageStaff() {
     } catch (err) {
       alert("Gagal mencari staff");
       console.error(err);
-    }
-  };
-
-  const handleTerminateToggle = async () => {
-    try {
-      await axios.post(
-        `http://localhost:5077/api/staff/${actionType}/${selectedStaff.id}`
-      );
-      alert(`${actionType} berhasil`);
-      setShowModal(false);
-      searchByName(); // refresh
-    } catch (err) {
-      alert(`${actionType} gagal`);
-    }
-  };
-
-  const handleDelete = async () => {
-    try {
-      await axios.delete(`http://localhost:5077/api/staff/delete/${staffToDelete.id}`);
-      alert("Data berhasil dihapus");
-      setShowDeleteModal(false);
-      searchByName(); // refresh
-    } catch (err) {
-      alert("Gagal menghapus data");
     }
   };
 
@@ -113,122 +90,120 @@ export default function ManageStaff() {
         </div>
       </div>
 
-      {/* Tabel hasil */}
       {results.length > 0 && (
-        <div className="mx-4">
-        <table className="min-w-full border text-sm mt-4">
-          <thead>
-            <tr className="bg-gray-100">
-              <th className="border px-2 py-1">Nama</th>
-              <th className="border px-2 py-1">NIM</th>
-              <th className="border px-2 py-1">Email</th>
-              <th className="border px-2 py-1">Status</th>
-              <th className="border px-2 py-1">Aksi</th>
-            </tr>
-          </thead>
-          <tbody>
-            {results.map((staff) => (
-              <tr key={staff.id}>
-                <td className="border px-2 py-1">{staff.fullName}</td>
-                <td className="border px-2 py-1">{staff.nim}</td>
-                <td className="border px-2 py-1">{staff.email}</td>
-                <td className="border px-2 py-1">
-                  {staff.isActive ? "Aktif" : "Tidak Aktif"}
-                </td>
-                <td className="border px-2 py-1 flex flex-wrap gap-2">
-                  <button
-                    className="bg-gray-600 text-white px-2 py-1 rounded text-sm"
-                    onClick={() => navigate(`/dashboard/display-data/${staff.id}`)}
-                  >
-                    Display
-                  </button>
-                  <button
-                    className="bg-yellow-600 text-white px-2 py-1 rounded text-sm"
-                    onClick={() => navigate(`/dashboard/edit-data/${staff.id}`)}
-                  >
-                    Edit
-                  </button>
-                  <button
-                    className="bg-red-600 text-white px-2 py-1 rounded text-sm"
-                    onClick={() => {
-                      setStaffToDelete(staff);
-                      setShowDeleteModal(true);
-                    }}
-                  >
-                    Delete
-                  </button>
+      <div className="mx-4 mt-4 rounded-lg overflow-hidden space-y-4">
+        <div className="bg-[#434045] text-white text-sm p-4">
+          {results.map((staff) => (
+            <div
+              key={staff.id}
+              className="flex items-center justify-between border border-[#9C94E8] rounded-md mb-4"
+            >
+              {/* Info Staff */}
+              <div className="flex flex-col flex-1 ">
+                <div className="flex justify-between text-gray-300 font-medium bg-[#39363B] p-3 border-r border-b border-[#717171]-50">
+                  <div className="w-1/3">Name</div>
+                  <div className="w-1/3">NIM</div>
+                  <div className="w-1/3">Binusian ID</div>
+                  
+                </div>
+                <div className="flex justify-between text-white font-semibold p-3 border-r border-b border-[#717171]-50">
+                  <div className="w-1/3">{staff.fullName}</div>
+                  <div className="w-1/3">{staff.nim}</div>
+                  <div className="w-1/3">{staff.binusianId}</div>
+                </div>
+              </div>
 
-                  <button
-                    className={`${
-                      staff.isActive ? "bg-red-700" : "bg-green-700"
-                    } text-white px-2 py-1 rounded text-sm`}
-                    onClick={() => {
-                      setSelectedStaff(staff);
-                      setActionType(staff.isActive ? "terminate" : "unterminate");
-                      setShowModal(true);
-                    }}
-                  >
-                    {staff.isActive ? "Terminate" : "Unterminate"}
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        </div>
-      )}
-
-      {/* Modal konfirmasi terminate/unterminate */}
-      {showModal && selectedStaff && (
-        <div className="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center z-50">
-          <div className="bg-white p-6 rounded shadow-md w-full max-w-md">
-            <h2 className="text-lg font-semibold mb-4">
-              Yakin ingin {actionType} {selectedStaff.fullName}?
-            </h2>
-            <div className="flex justify-end gap-3">
-              <button
-                className="px-4 py-2 bg-gray-300 rounded"
-                onClick={() => setShowModal(false)}
-              >
-                Batal
-              </button>
-              <button
-                className={`px-4 py-2 rounded text-white ${
-                  actionType === "terminate" ? "bg-red-600" : "bg-green-600"
-                }`}
-                onClick={handleTerminateToggle}
-              >
-                Ya, {actionType}
-              </button>
+              {/* Tombol Aksi */}
+              <div className="flex pl-6 flex-1 gap-10 mx-4">
+                <button
+                  className="w-28 px-4 py-2 border bg-[#3D2C51] border-[#9C94E8] text-white rounded-full hover:bg-[#9C94E8] transition"
+                  onClick={() => navigate(`/dashboard/display-data/${staff.id}`)}
+                >
+                  Details
+                </button>
+                <button
+                  className="w-28 px-4 py-2 border bg-[#3D2C51] border-[#9C94E8] text-white rounded-full hover:bg-[#9C94E8] transition"
+                  onClick={() => navigate(`/dashboard/edit-data/${staff.id}`)}
+                >
+                  Edit
+                </button>
+                <button
+                  className="w-28 px-4 py-2 border bg-[#3D2C51] border-[#9C94E8] text-white rounded-full hover:bg-[#9C94E8] transition"
+                  onClick={() => {
+                    setStaffToDelete(staff);
+                    setDeleteStep(1);
+                  }}
+                >
+                  Delete
+                </button>
+                <button
+                  className="w-28 px-4 py-2 border bg-[#3D2C51] border-[#9C94E8] text-white rounded-full hover:bg-[#9C94E8] transition"
+                  onClick={() => {
+                    setStaffToTerminate(staff);
+                    setActionType(staff.isActive ? "terminate" : "unterminate");
+                    setTerminateStep(1);
+                  }}
+                >
+                  {staff.isActive ? "Terminate" : "Unterminate"}
+                </button>
+              </div>
             </div>
-          </div>
+          ))}
         </div>
-      )}
+      </div>
+    )}
+
+
+
+      <DoubleConfirmModal
+        showStep={terminateStep}
+        data={staffToTerminate}
+        onCancel={() => {
+          setTerminateStep(0);
+          setStaffToTerminate(null);
+        }}
+        onFirstConfirm={() => setTerminateStep(2)}
+        onSecondCancel={() => setTerminateStep(1)}
+        onSecondConfirm={async () => {
+          try {
+            await axios.post(
+              `http://localhost:5077/api/staff/${actionType}/${staffToTerminate.id}`
+            );
+            alert(`${actionType} berhasil`);
+            setTerminateStep(0);
+            setStaffToTerminate(null);
+            searchByName(); // Refresh
+          } catch (err) {
+            alert(`${actionType} gagal`);
+          }
+        }}
+        actionType={actionType}
+      />
 
       {/* Modal hapus */}
-      {showDeleteModal && staffToDelete && (
-        <div className="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center z-50">
-          <div className="bg-white p-6 rounded shadow-md w-full max-w-md">
-            <h2 className="text-lg font-semibold mb-4">
-              Yakin ingin menghapus {staffToDelete.fullName}?
-            </h2>
-            <div className="flex justify-end gap-3">
-              <button
-                className="px-4 py-2 bg-gray-300 rounded"
-                onClick={() => setShowDeleteModal(false)}
-              >
-                Batal
-              </button>
-              <button
-                className="px-4 py-2 bg-red-600 text-white rounded"
-                onClick={handleDelete}
-              >
-                Ya, hapus
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      <DoubleConfirmModal
+        showStep={deleteStep}
+        data={staffToDelete}
+        onCancel={() => {
+          setDeleteStep(0);
+          setStaffToDelete(null);
+        }}
+        onFirstConfirm={() => setDeleteStep(2)}
+        onSecondCancel={() => setDeleteStep(1)}
+        onSecondConfirm={async () => {
+          try {
+            await axios.delete(`http://localhost:5077/api/staff/delete/${staffToDelete.id}`);
+            alert("Data berhasil dihapus");
+            setDeleteStep(0);
+            setStaffToDelete(null);
+            searchByName(); // Refresh data
+          } catch (err) {
+            alert("Gagal menghapus data");
+          }
+        }}
+        actionType="delete"
+      />
+
     </div>
   );
 }

@@ -11,7 +11,6 @@ export default function Login() {
     e.preventDefault();
     try {
       await login(email, password);
-      alert("Login sukses!");
       navigate("/dashboard");
     } catch (err) {
       alert("Login gagal: " + err.response?.data?.message || err.message);
@@ -19,35 +18,32 @@ export default function Login() {
   };
 
   return (
-    <div>
-      <h1 className="text-2xl font-bold mb-4">Login</h1>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <input
-          type="email"
-          placeholder="Email"
-          className="w-full border px-3 py-2 rounded"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+    <div className="flex flex-col justify-center items-center bg-[#39363B] min-h-screen px-4 w-full">
+      <h1 className="font-semibold text-[#9C94E8] text-5xl mb-10">Login</h1>
+      <form onSubmit={handleSubmit} className="space-y-4 w-full max-w-md">
+        <h3 className="text-white mb-2 font-thin text-2xl">Email</h3>
+        <input 
+        type="email" 
+        placeholder="Enter Your Email"
+        className="w-full border px-3 py-2 rounded text-white"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
         />
-        <input
-          type="password"
-          placeholder="Password"
-          className="w-full border px-3 py-2 rounded"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
+        <h3 className="text-white mb-2 font-thin text-2xl">Password</h3>
+        <input 
+        type="password"
+        placeholder="Enter Your Password" 
+        className="w-full border px-3 py-2 rounded text-white"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
         />
-        <button
-          type="submit"
-          className="bg-blue-600 text-white px-4 py-2 rounded w-full"
-        >
-          Login
-        </button>
-      </form>
+        <button type="submit" className="bg-[#3D2C51] border-2 border-[#9C94E8] text-white px-4 py-2 rounded-4xl w-full m-0 hover:bg-[#9C94E8] cursor-pointer">Login</button>
         <p className="mt-4 text-center">
-      <Link to="/register" className="text-blue-600 hover:underline">
-        Go to Register
-      </Link>
-    </p>
+          <Link to="/register" className="text-[#9C94E8] hover:underline">
+            Go to Register
+          </Link>
+        </p>
+      </form>
     </div>
   );
 }

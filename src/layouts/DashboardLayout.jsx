@@ -1,8 +1,40 @@
 import { NavLink, Outlet } from "react-router-dom";
 import { RiDashboardFill, RiFile2Fill, RiAddBoxLine} from "react-icons/ri";
 import { BsPersonFillGear } from "react-icons/bs";
+import { useState, useEffect, useRef} from "react";
+import { logout } from "../services/AuthService"
+import { useNavigate } from "react-router-dom";
 
 export default function DashboardLayout() {
+  const navigate = useNavigate();
+  const [showDropdown, setShowDropDown] = useState(false);
+  const [currentTime, setCurrentTime] = useState(new(Date));
+  const dropdownRef = useRef(null);
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate("/login");
+  };
+
+  useEffect(()=>{
+    const handleClickOutside = (event) =>{
+      if(dropdownRef.current && !dropdownRef.current.contains(event.target)){
+        setShowDropDown(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return ()=>{
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  useEffect(()=>{
+    const interval = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
   return (
     <div className="h-screen flex flex-col bg-[#2e2b30] text-white">
       {/* Top Bar */}
@@ -12,7 +44,7 @@ export default function DashboardLayout() {
 
         {/* Right Side (Date + Icon) */}
         <div className="flex items-center text-base font-light text-gray-300">
-          {new Date().toLocaleString("en-US", {
+          {currentTime.toLocaleString("en-US", {
             year: "numeric",
             month: "long",
             day: "numeric",
@@ -20,7 +52,29 @@ export default function DashboardLayout() {
             minute: "2-digit",
             second: "2-digit",
           })}
-          <div className="w-6 h-6 rounded-full bg-purple-400 ml-4"></div>
+          <div className="relative" ref={dropdownRef}>
+            <div className="w-6 h-6 rounded-full bg-purple-400 ml-4"
+            onClick={()=>setShowDropDown((prev) => !prev)}></div>
+
+            {showDropdown && (
+              <div className="absolute right-0 mt-5 bg-[#39363B] text-white rounded shadow-md w-xs z-50">
+                <p className="px-4 py-2">Testing</p>
+                <p className="px-4 pb-2">Testing</p>
+                <hr className="border-t border-gray-600" />
+
+                <p>{}</p>
+                <button
+                  className="block w-full text-left px-4 py-2 hover:bg-red-400"
+                  onClick={() => {
+                    setShowDropDown(false);
+                    handleLogout();
+                  }}
+                >
+                  Logout
+                </button>
+              </div>
+            )}
+          </div>
         </div>
       </header>
 
@@ -84,10 +138,13 @@ export default function DashboardLayout() {
         </aside>
 
         {/* Page Content */}
-        <main className="flex-1 bg-[#39363b] overflow-auto">
+        <main className="flex-1 bg-[#2e2b30] overflow-auto m-0 p-0">
           <Outlet />
         </main>
       </div>
     </div>
   );
+  
 }
+
+

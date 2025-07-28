@@ -3,7 +3,7 @@ import TextInput from "../common/TextInput";
 import RadioGroup from "../common/RadioGroup";
 import DateInput from "../common/DateInput";
 
-export default function StaffForm({ initialData = {}, onSubmit, buttonText = "Add Data" }) {
+export default function StaffForm({ initialData = {}, onSubmit, buttonText = "Add Data", readOnly = false}) {
   const defaultForm = {
     fullName: "",
     dateOfBirth: "",
@@ -58,46 +58,45 @@ export default function StaffForm({ initialData = {}, onSubmit, buttonText = "Ad
   };
 
   return (
-    <div className="m-4">
-      <form onSubmit={handleSubmit} className="bg-[#39363b] text-white p-6 rounded-lg mx-4 space-y-6">
-        <h2 className="text-2xl font-semibold mb-4">Staff Data Form</h2>
-
+    <div className="">
+      <form onSubmit={handleSubmit} className="bg-[#2e2b30] text-white rounded-lg mx-6 space-y-6">
+        {/* <h2 className="text-2xl font-semibold mb-4">Staff Data Form</h2> */}
         {/* MAIN WRAPPER GRID: dua kolom dengan garis vertikal lurus */}
         <div className="hidden md:grid md:grid-cols-2 md:divide-x md:gap-6">
           {/* LEFT COLUMN */}
           <div className="pr-6 space-y-6">
             <p className="text-xl mb-2 font-medium">GENERAL Data</p>
-            <TextInput label="1. Full Name" name="fullName" value={formData.fullName} onChange={handleChange} />
-            <DateInput label="2. Birth Date" name="dateOfBirth" value={formData.dateOfBirth} onChange={handleChange} />
-            <RadioGroup label="3. Gender" name="gender" options={["Male", "Female"]} selected={formData.gender} onChange={handleChange} />
-            <TextInput label="4. Phone Number (WhatsApp)" name="phoneNumber" value={formData.phoneNumber} onChange={handleChange} />
+            <TextInput label="1. Full Name" name="fullName" value={formData.fullName} onChange={handleChange} readOnly={readOnly}/>
+            <DateInput label="2. Birth Date" name="dateOfBirth" value={formData.dateOfBirth} onChange={handleChange} readOnly={readOnly}/>
+            <RadioGroup label="3. Gender" name="gender" options={["Male", "Female"]} selected={formData.gender} onChange={handleChange} readOnly={readOnly}/>
+            <TextInput label="4. Phone Number (WhatsApp)" name="phoneNumber" value={formData.phoneNumber} onChange={handleChange} readOnly={readOnly}/>
 
             <p className="text-xl mb-2 font-medium">BINUSIAN Data</p>
-            <TextInput label="5. Nomor Induk Mahasiswa (NIM)" name="nim" value={formData.nim} onChange={handleChange} />
-            <TextInput label="6. Binusian ID" name="binusianId" value={formData.binusianId} onChange={handleChange} />  
-            <TextInput label="7. Email Address (binus.edu or binus.ac.id for those who don't have one)" name="email" value={formData.email} onChange={handleChange} />
-            <TextInput label="8. Active Semester (Counting Even Semester Period - February)" name="activeSemester" value={formData.activeSemester} onChange={handleChange} />
-            <RadioGroup label="9. Binusian Status" name="binusianStatus" options={["Associate Member (AM)", "Associate Member (AM) / Junior Staff under", "Non-Associate Member (Non-AM)"]} selected={formData.binusianStatus} onChange={handleChange} direction="column"/>
-            <DateInput label="10. Start Date" name="startDate" value={formData.startDate} onChange={handleChange} />
-            <DateInput label="11. End Date" name="endDate" value={formData.endDate} onChange={handleChange} />
+            <TextInput label="5. Nomor Induk Mahasiswa (NIM)" name="nim" value={formData.nim} onChange={handleChange} readOnly={readOnly}/>
+            <TextInput label="6. Binusian ID" name="binusianId" value={formData.binusianId} onChange={handleChange} readOnly={readOnly}/>  
+            <TextInput label="7. Email Address (binus.edu or binus.ac.id for those who don't have one)" name="email" value={formData.email} onChange={handleChange} readOnly={readOnly}/>
+            <TextInput label="8. Active Semester (Counting Even Semester Period - February)" name="activeSemester" value={formData.activeSemester} onChange={handleChange} readOnly={readOnly}/>
+            <RadioGroup label="9. Binusian Status" name="binusianStatus" options={["Associate Member (AM)", "Associate Member (AM) / Junior Staff under", "Non-Associate Member (Non-AM)"]} selected={formData.binusianStatus} onChange={handleChange} direction="column" readOnly={readOnly}/>
+            <DateInput label="10. Start Date" name="startDate" value={formData.startDate} onChange={handleChange} readOnly={readOnly}/>
+            <DateInput label="11. End Date" name="endDate" value={formData.endDate} onChange={handleChange} readOnly={readOnly}/>
           </div>
 
           {/* RIGHT COLUMN */}
           <div className="pl-6 space-y-6">
             {/* <h3 className="text-lg font-semibold invisible">Spacer</h3>  */}
             <p className="text-xl mb-2 font-medium">Legal / Citizen Data</p>
-            <TextInput label="12. Nomor Induk Kewarganegaraan (NIK) KTP " name="nik" value={formData.nik} onChange={handleChange} />
-            <TextInput label="13. Domisili (Sesuai KTP)" name="address" value={formData.address} onChange={handleChange} />
-            <TextInput label="14. No NPWP (Must be made)" name="npwp" value={formData.npwp} onChange={handleChange} />
+            <TextInput label="12. Nomor Induk Kewarganegaraan (NIK) KTP " name="nik" value={formData.nik} onChange={handleChange} readOnly={readOnly}/>
+            <TextInput label="13. Domisili (Sesuai KTP)" name="address" value={formData.address} onChange={handleChange} readOnly={readOnly}/>
+            <TextInput label="14. No NPWP (Must be made)" name="npwp" value={formData.npwp} onChange={handleChange} readOnly={readOnly}/>
             <p className="text-xl mb-2 font-medium">Bank Account Data</p>
-            <TextInput label="15. BCA Account Number" name="bankAccountNumber" value={formData.bankAccountNumber} onChange={handleChange} />
-            <TextInput label="16. BCA Bank Branch Account Opening (Example: KCP Bina Nusantara)" name="bankBranch" value={formData.bankBranch} onChange={handleChange} />
-            <TextInput label="17. BCA Account Holder Name" name="accountHolderName" value={formData.accountHolderName} onChange={handleChange} />
+            <TextInput label="15. BCA Account Number" name="bankAccountNumber" value={formData.bankAccountNumber} onChange={handleChange} readOnly={readOnly}/>
+            <TextInput label="16. BCA Bank Branch Account Opening (Example: KCP Bina Nusantara)" name="bankBranch" value={formData.bankBranch} onChange={handleChange} readOnly={readOnly}/>
+            <TextInput label="17. BCA Account Holder Name" name="accountHolderName" value={formData.accountHolderName} onChange={handleChange} readOnly={readOnly}/>
             <p className="text-xl mb-2 font-medium">Relative Data</p>
-            <TextInput label="18. Parent / Guardian's Name" name="parentGuardianName" value={formData.parentGuardianName} onChange={handleChange} />
-            <TextInput label="19. Parent/Guardian Phone Number" name="emergencyContact" value={formData.emergencyContact} onChange={handleChange} />
-            <TextInput label="20. Emergency Contact Number" name="emergencyContact" value={formData.emergencyContact} onChange={handleChange} />
-            <TextInput label="21. Relationship with Emergency Contact" name="emergencyRelation" value={formData.emergencyRelation} onChange={handleChange} />
+            <TextInput label="18. Parent / Guardian's Name" name="parentGuardianName" value={formData.parentGuardianName} onChange={handleChange} readOnly={readOnly}/>
+            <TextInput label="19. Parent/Guardian Phone Number" name="emergencyContact" value={formData.emergencyContact} onChange={handleChange} readOnly={readOnly}/>
+            <TextInput label="20. Emergency Contact Number" name="emergencyContact" value={formData.emergencyContact} onChange={handleChange} readOnly={readOnly}/>
+            <TextInput label="21. Relationship with Emergency Contact" name="emergencyRelation" value={formData.emergencyRelation} onChange={handleChange} readOnly={readOnly}/>
           </div>
         </div>
 
@@ -105,14 +104,14 @@ export default function StaffForm({ initialData = {}, onSubmit, buttonText = "Ad
         <div className="md:hidden space-y-6">
           {Object.entries(formData).map(([key, value]) => {
             if (key === "gender") {
-              return <RadioGroup key={key} label={key} name={key} options={["Male", "Female"]} selected={value} onChange={handleChange} />;
+              return <RadioGroup key={key} label={key} name={key} options={["Male", "Female"]} selected={value} onChange={handleChange} readOnly={readOnly}/>;
             }
             const isDateField = ["dateOfBirth", "startDate", "endDate"].includes(key);
             const label = key
               .replace(/([A-Z])/g, " $1")
               .replace(/^./, (str) => str.toUpperCase());
             const InputComponent = isDateField ? DateInput : TextInput;
-            return <InputComponent key={key} label={label} name={key} value={value} onChange={handleChange} />;
+            return <InputComponent key={key} label={label} name={key} value={value} onChange={handleChange} readOnly={readOnly}/>;
           })}
         </div>
 

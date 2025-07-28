@@ -1,4 +1,4 @@
-export default function TextInput({ label, name, value, onChange }) {
+export default function TextInput({ label, name, value, onChange, readOnly=false }) {
   return (
     <div className="flex flex-col">
       <label htmlFor={name} className="font-light mb-1 text-lg">{label}</label>
@@ -9,7 +9,8 @@ export default function TextInput({ label, name, value, onChange }) {
         value={value}
         onChange={onChange}
         placeholder="Enter Your Answer"
-        className="border border-gray-300 bg-[#D8D8D8] text-black rounded px-3 py-1 placeholder:"
+        readOnly={readOnly}
+        className={`w-full p-2 rounded bg-white text-black ${readOnly ? "bg-gray-200 cursor-not-allowed" : ""}`}
       />
     </div>
   );
