@@ -3,6 +3,7 @@ import { RiDashboardFill, RiFile2Fill, RiAddBoxLine} from "react-icons/ri";
 import { BsPersonFillGear } from "react-icons/bs";
 import { useState, useEffect, useRef} from "react";
 import { logout } from "../services/AuthService"
+import { IoPersonCircleOutline } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 
 export default function DashboardLayout() {
@@ -53,18 +54,19 @@ export default function DashboardLayout() {
             second: "2-digit",
           })}
           <div className="relative" ref={dropdownRef}>
-            <div className="w-6 h-6 rounded-full bg-purple-400 ml-4"
-            onClick={()=>setShowDropDown((prev) => !prev)}></div>
+            <IoPersonCircleOutline className="w-9 h-9 rounded-full bg-[#9C94E8] ml-4 hover:cursor-pointer" onClick={()=>setShowDropDown((prev) => !prev)}/>
+            {/* <div className="w-6 h-6 rounded-full bg-purple-400 ml-4"
+            onClick={()=>setShowDropDown((prev) => !prev)}></div> */}
 
             {showDropdown && (
               <div className="absolute right-0 mt-5 bg-[#39363B] text-white rounded shadow-md w-xs z-50">
-                <p className="px-4 py-2">Testing</p>
-                <p className="px-4 pb-2">Testing</p>
+                <p className="px-4 py-2">Admin</p>
+                {/* <p className="px-4 pb-2">Testing</p> */}
                 <hr className="border-t border-gray-600" />
 
                 <p>{}</p>
                 <button
-                  className="block w-full text-left px-4 py-2 hover:bg-red-400"
+                  className="block w-full text-left px-4 py-2 hover:bg-red-400 hover:cursor-pointer"
                   onClick={() => {
                     setShowDropDown(false);
                     handleLogout();

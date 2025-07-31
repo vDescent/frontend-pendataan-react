@@ -1,8 +1,8 @@
-export default function RadioGroup({ label, name, options, selected, onChange, direction = "row", readOnly = false }) {
+export default function RadioGroup({ label, name, options, selected, onChange, direction = "row", readOnly = false, error }) {
   const isColumn = direction === "column";
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col my-5">
       <label className="font-medium mb-2">{label}</label>
       <div className={`flex ${isColumn ? "flex-col gap-3" : "flex-row items-center gap-6"}`}>
         {options.map((opt) => {
@@ -33,6 +33,7 @@ export default function RadioGroup({ label, name, options, selected, onChange, d
           );
         })}
       </div>
+      {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
     </div>
   );
 }

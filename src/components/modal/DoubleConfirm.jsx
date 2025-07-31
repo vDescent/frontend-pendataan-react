@@ -8,8 +8,8 @@ export default function DoubleConfirmModal({
   actionType = "delete", 
 }) {
     const firstButtonStyle = actionType === "unterminate" ? 
-    "px-4 py-2 bg-[#32512C] text-white rounded-3xl border-3 border-[#76B743] hover:bg-[#76B743]":
-    "px-4 py-2 bg-[#512C2C] text-white rounded-3xl border-3 border-[#FF5A51] hover:bg-[#FF5A51]";
+    "px-4 py-2 bg-[#32512C] text-white rounded-3xl border-3 border-[#76B743] hover:bg-[#76B743] cursor-pointer":
+    "px-4 py-2 bg-[#512C2C] text-white rounded-3xl border-3 border-[#FF5A51] hover:bg-[#FF5A51] cursor-pointer";
 
     const actionWords = {
         delete: {
@@ -66,8 +66,8 @@ export default function DoubleConfirmModal({
                 {text.secondTitle}
             </h2>
             <div className="flex justify-between gap-2">
-              <button onClick={onSecondConfirm} className="px-8 py-2 bg-[#32512C] border-3 border-[#76B743] rounded-3xl text-white hover:bg-[#76B743]">Yes</button>
-              <button onClick={onSecondCancel} className="px-8 py-2 bg-[#512C2C] border-3 border-[#FF5A51] rounded-3xl text-white hover:bg-[#FF5A51]">No</button>
+              <button onClick={onSecondConfirm} className="px-8 py-2 bg-[#32512C] border-3 border-[#76B743] rounded-3xl text-white hover:bg-[#76B743] cursor-pointer">Yes</button>
+              <button onClick={onSecondCancel} className="px-8 py-2 bg-[#512C2C] border-3 border-[#FF5A51] rounded-3xl text-white hover:bg-[#FF5A51] cursor-pointer">No</button>
             </div>
           </div>
         </div>

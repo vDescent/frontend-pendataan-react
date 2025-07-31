@@ -4,7 +4,7 @@ export default function AuthLayout() {
   return (
     <div className="flex flex-col lg:flex-row h-screen">
       <div
-        className="flex flex-1 justify-center items-center p-8 sm:hidden md:hidden"
+        className="hidden lg:flex flex-1 justify-center items-center p-8"
         style={{
           background: "linear-gradient(to bottom, #9771C5 0%, #573C77 50%, #311B4B 100%)",
         }}

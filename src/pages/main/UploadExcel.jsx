@@ -3,7 +3,7 @@ import { FiUpload } from "react-icons/fi";
 
 export default function UploadExcelPage() {
   // const [uploadProgress, setUploadProgress] = useState(50);
-  const [fileName, setFileName] = useState("StaffData1.XLSX");
+  const [fileName, setFileName] = useState("");
   const fileInputRef = useRef(null);
   const [selectedFile, setSelectedFile] = useState(null);
 
@@ -50,7 +50,7 @@ export default function UploadExcelPage() {
         <p className="text-sm mb-4 text-gray-400">or</p>
         <button
           onClick={handleBrowseClick}
-          className="bg-[#3D2C51] hover:bg-[#6d4fa7] text-white font-semibold px-6 py-2 rounded-3xl border-2 border-[#9C94E8]"
+          className="bg-[#3D2C51] text-white font-semibold px-6 py-2 rounded-3xl border-2 border-[#9C94E8] hover:bg-[#9C94E8] cursor-pointer"
         >
           Browse Files
         </button>
@@ -76,7 +76,7 @@ export default function UploadExcelPage() {
 
         <button
           onClick={handleUpload}
-          className="bg-[#3D2C51] hover:bg-[#6d4fa7] text-white font-semibold px-6 py-2 my-2 rounded-3xl border-2 border-[#9C94E8]"
+          className="bg-[#3D2C51] text-white font-semibold px-6 py-2 my-2 rounded-3xl border-2 border-[#9C94E8] hover:bg-[#9C94E8] cursor-pointer"
         >
           Upload
         </button>

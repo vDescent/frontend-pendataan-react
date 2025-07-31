@@ -29,7 +29,7 @@ export default function ManageStaff() {
   const searchByNIM = async () => {
     try {
       const res = await axios.get(
-        `http://localhost:5077/api/staff/search?keyword=${keywordNIM}`
+        `http://localhost:5077/api/staff/search-nim?nim=${keywordNIM}`
       );
       setResults(res.data);
     } catch (err) {
@@ -59,7 +59,7 @@ export default function ManageStaff() {
               onChange={(e) => setKeywordName(e.target.value)}
             />
             <button
-              className="bg-[#3D2C51] text-white px-4 py-2 rounded-4xl border-2 border-[#9C94E8] whitespace-nowrap"
+              className="bg-[#3D2C51] text-white px-4 py-2 rounded-4xl border-2 border-[#9C94E8] whitespace-nowrap hover:bg-[#9C94E8] cursor-pointer"
               onClick={searchByName}
             >
               Search By Name
@@ -81,7 +81,7 @@ export default function ManageStaff() {
               onChange={(e) => setKeywordNIM(e.target.value)}
             />
             <button
-              className="bg-[#3D2C51] text-white px-4 py-2 rounded-4xl border-2 border-[#9C94E8] whitespace-nowrap"
+              className="bg-[#3D2C51] text-white px-4 py-2 rounded-4xl border-2 border-[#9C94E8] whitespace-nowrap hover:bg-[#9C94E8] cursor-pointer"
               onClick={searchByNIM}
             >
               Search By NIM
@@ -116,19 +116,19 @@ export default function ManageStaff() {
               {/* Tombol Aksi */}
               <div className="flex pl-6 flex-1 gap-10 mx-4">
                 <button
-                  className="w-28 px-4 py-2 border bg-[#3D2C51] border-[#9C94E8] text-white rounded-full hover:bg-[#9C94E8] transition"
+                  className="w-28 px-4 py-2 border-2 bg-[#3D2C51] border-[#9C94E8] text-white rounded-full hover:bg-[#9C94E8] cursor-pointer"
                   onClick={() => navigate(`/dashboard/display-data/${staff.id}`)}
                 >
                   Details
                 </button>
                 <button
-                  className="w-28 px-4 py-2 border bg-[#3D2C51] border-[#9C94E8] text-white rounded-full hover:bg-[#9C94E8] transition"
+                  className="w-28 px-4 py-2 border-2 bg-[#3D2C51] border-[#9C94E8] text-white rounded-full hover:bg-[#9C94E8] cursor-pointer"
                   onClick={() => navigate(`/dashboard/edit-data/${staff.id}`)}
                 >
                   Edit
                 </button>
                 <button
-                  className="w-28 px-4 py-2 border bg-[#3D2C51] border-[#9C94E8] text-white rounded-full hover:bg-[#9C94E8] transition"
+                  className="w-28 px-4 py-2 border-2 bg-[#512C2C] border-[#FF5A51] text-white rounded-full hover:bg-[#FF5A51] cursor-pointer"
                   onClick={() => {
                     setStaffToDelete(staff);
                     setDeleteStep(1);
@@ -137,7 +137,12 @@ export default function ManageStaff() {
                   Delete
                 </button>
                 <button
-                  className="w-28 px-4 py-2 border bg-[#3D2C51] border-[#9C94E8] text-white rounded-full hover:bg-[#9C94E8] transition"
+                  className={`w-28 px-4 py-2 border-2 rounded-full cursor-pointer 
+                    ${staff.isActive 
+                      ? 'bg-[#512C2C] border-[#FF5A51] hover:bg-[#FF5A51]' // terminate
+                      : 'bg-[#32512C] border-[#76B743] hover:bg-[#76B743]' // unterminate
+                    }`
+                  }
                   onClick={() => {
                     setStaffToTerminate(staff);
                     setActionType(staff.isActive ? "terminate" : "unterminate");
@@ -169,7 +174,7 @@ export default function ManageStaff() {
             await axios.post(
               `http://localhost:5077/api/staff/${actionType}/${staffToTerminate.id}`
             );
-            alert(`${actionType} berhasil`);
+            // alert(`${actionType} berhasil`);
             setTerminateStep(0);
             setStaffToTerminate(null);
             searchByName(); // Refresh
@@ -196,7 +201,7 @@ export default function ManageStaff() {
             alert("Data berhasil dihapus");
             setDeleteStep(0);
             setStaffToDelete(null);
-            searchByName(); // Refresh data
+            searchByNIM(); // Refresh data
           } catch (err) {
             alert("Gagal menghapus data");
           }
