@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { register } from "../../services/AuthService";
 import { useNavigate, Link } from "react-router-dom";
+import validateRegister from "../../utils/validateRegister";
 
 export default function Register() {
   const [form, setForm] = useState({
@@ -18,6 +19,7 @@ export default function Register() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
     try {
       await register(form);
       alert("Registrasi berhasil!");

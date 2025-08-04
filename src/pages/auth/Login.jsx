@@ -1,19 +1,37 @@
 import { useState } from "react";
 import { login } from "../../services/AuthService";
 import { useNavigate, Link } from "react-router-dom";
+// import validateLogin from "../../utils/validateAuth";
+import validateLogin from "../../utils/validateLogin";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const formData = {email: email.trim(), password: password.trim()};
+    const validationErrors = validateLogin(formData);
+
+    if(Object.keys(validationErrors).length > 0){
+      setErrors(validationErrors);
+      return;
+    }
+
+    setErrors({});
+
     try {
+      setLoading(true);
       await login(email, password);
+      setLoading(false);
       navigate("/dashboard");
     } catch (err) {
       alert("Login gagal: " + err.response?.data?.message || err.message);
+      setLoading(false)
     }
   };
 
@@ -23,21 +41,27 @@ export default function Login() {
       <form onSubmit={handleSubmit} className="space-y-4 w-full max-w-md">
         <h3 className="text-white mb-2 font-thin text-2xl">Email</h3>
         <input 
-        type="email" 
+        type="text" 
         placeholder="Enter Your Email"
-        className="w-full border px-3 py-2 rounded text-white"
+        className="w-full border px-3 py-2 rounded text-white my-2"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         />
+        {errors.email && <p className="text-red-500 text-sm m-0">{errors.email}</p>}
+
         <h3 className="text-white mb-2 font-thin text-2xl">Password</h3>
         <input 
         type="password"
         placeholder="Enter Your Password" 
-        className="w-full border px-3 py-2 rounded text-white"
+        className="w-full border px-3 py-2 rounded text-white my-4"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         />
-        <button type="submit" className="bg-[#3D2C51] border-2 border-[#9C94E8] text-white px-4 py-2 rounded-4xl w-full m-0 hover:bg-[#9C94E8] cursor-pointer">Login</button>
+        {errors.password && <p className="text-red-500 text-sm">{errors.password}</p>}
+        <button type="submit" disabled={loading} className="bg-[#3D2C51] border-2 border-[#9C94E8] text-white px-4 py-2 rounded-4xl w-full m-0 hover:bg-[#9C94E8] cursor-pointer">
+          
+          {loading ? "Loading..." : "Login"}
+        </button>
         <p className="mt-4 text-center">
           <Link to="/register" className="text-[#9C94E8] hover:underline">
             Go to Register

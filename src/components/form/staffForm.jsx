@@ -4,6 +4,7 @@ import RadioGroup from "../common/RadioGroup";
 import DateInput from "../common/DateInput";
 import { IoInformationCircle } from "react-icons/io5";
 import validateStaffForm from "../../utils/validateStafForm";
+import { useLocation } from "react-router-dom";
 
 export default function StaffForm({ initialData = {}, onSubmit, buttonText = "Add Data", readOnly = false}) {
   const defaultForm = {
@@ -30,10 +31,14 @@ export default function StaffForm({ initialData = {}, onSubmit, buttonText = "Ad
     emergencyRelation: "",
   };
 
+  
   const [errors, setErrors] = useState({});
   const [formData, setFormData] = useState(defaultForm);
   const [status, setStatus] = useState("");
   const [loading, setLoading] = useState(false);
+  const location = useLocation();
+  const isDetailPage = location.pathname.includes("display-data");
+  const isEditPage = location.pathname.includes("edit-data");
 
   useEffect(() => {
     setFormData({ ...defaultForm, ...initialData });
@@ -92,8 +97,8 @@ export default function StaffForm({ initialData = {}, onSubmit, buttonText = "Ad
             {/* bagian kiri */}
             <div className="flex flex-col">
               <RadioGroup label="9. Binusian Status" name="binusianStatus" options={["Associate Member (AM)", "Associate Member (AM) / Junior Staff under", "Non-Associate Member (Non-AM)"]} selected={formData.binusianStatus} onChange={handleChange} direction="column" readOnly={readOnly} error={errors.binusianStatus}/>
-              <DateInput label="10. Start Date" name="startDate" value={formData.startDate} onChange={handleChange} readOnly={readOnly}/>
-              <DateInput label="11. End Date" name="endDate" value={formData.endDate} onChange={handleChange} readOnly={readOnly}/>
+              <DateInput label="10. Start Date" name="startDate" value={formData.startDate} onChange={handleChange} readOnly={readOnly} error={errors.startDate}/>
+              <DateInput label="11. End Date" name="endDate" value={formData.endDate} onChange={handleChange} readOnly={readOnly} error={errors.endDate}/>
             </div>
             {/* bagian kanan */}
             <div className="bg-[#434045] p-5 flex flex-col flex-1/2 text-justify rounded-2xl">
@@ -115,34 +120,36 @@ export default function StaffForm({ initialData = {}, onSubmit, buttonText = "Ad
           <div className="pl-6 space-y-6">
             {/* <h3 className="text-lg font-semibold invisible">Spacer</h3>  */}
             <p className="text-xl mb-2 font-medium">Legal / Citizen Data</p>
-            <TextInput label="12. Nomor Induk Kewarganegaraan (NIK) KTP " name="nik" value={formData.nik} onChange={handleChange} readOnly={readOnly}/>
-            <TextInput label="13. Domisili (Sesuai KTP)" name="address" value={formData.address} onChange={handleChange} readOnly={readOnly}/>
-            <TextInput label="14. No NPWP (Must be made)" name="npwp" value={formData.npwp} onChange={handleChange} readOnly={readOnly}/>
+            <TextInput label="12. Nomor Induk Kewarganegaraan (NIK) KTP " name="nik" value={formData.nik} onChange={handleChange} readOnly={readOnly} error={errors.nik}/>
+            <TextInput label="13. Domisili (Sesuai KTP)" name="address" value={formData.address} onChange={handleChange} readOnly={readOnly} error={errors.address}/>
+            <TextInput label="14. No NPWP (Must be made)" name="npwp" value={formData.npwp} onChange={handleChange} readOnly={readOnly} error={errors.npwp}/>
             <p className="text-xl mb-2 font-medium">Bank Account Data</p>
-            <TextInput label="15. BCA Account Number" name="bankAccountNumber" value={formData.bankAccountNumber} onChange={handleChange} readOnly={readOnly}/>
-            <TextInput label="16. BCA Bank Branch Account Opening (Example: KCP Bina Nusantara)" name="bankBranch" value={formData.bankBranch} onChange={handleChange} readOnly={readOnly}/>
-            <TextInput label="17. BCA Account Holder Name" name="accountHolderName" value={formData.accountHolderName} onChange={handleChange} readOnly={readOnly}/>
+            <TextInput label="15. BCA Account Number" name="bankAccountNumber" value={formData.bankAccountNumber} onChange={handleChange} readOnly={readOnly} error={errors.bankAccountNumber}/>
+            <TextInput label="16. BCA Bank Branch Account Opening (Example: KCP Bina Nusantara)" name="bankBranch" value={formData.bankBranch} onChange={handleChange} readOnly={readOnly} error={errors.bankBranch}/>
+            <TextInput label="17. BCA Account Holder Name" name="accountHolderName" value={formData.accountHolderName} onChange={handleChange} readOnly={readOnly} error={errors.accountHolderName}/>
             <p className="text-xl mb-2 font-medium">Relative Data</p>
-            <TextInput label="18. Parent / Guardian's Name" name="parentGuardianName" value={formData.parentGuardianName} onChange={handleChange} readOnly={readOnly}/>
-            <TextInput label="19. Parent/Guardian Phone Number" name="emergencyContact" value={formData.emergencyContact} onChange={handleChange} readOnly={readOnly}/>
-            <TextInput label="20. Emergency Contact Number" name="emergencyContact" value={formData.emergencyContact} onChange={handleChange} readOnly={readOnly}/>
-            <TextInput label="21. Relationship with Emergency Contact" name="emergencyRelation" value={formData.emergencyRelation} onChange={handleChange} readOnly={readOnly}/>
-            <div className="flex justify-between my-10">
-              <button
-                type="button"
-                onClick={() => setFormData({ ...defaultForm, ...initialData })}
-                className="px-6 py-2 bg-[#512C2C] border-3 border-[#FF5A51] rounded-4xl hover:bg-[#FF5A51] cursor-pointer"
-              >
-                Cancel
-              </button>
-              <button
-                type="submit"
-                disabled={loading}
-                className="px-6 py-2 border-2 border-[#9C94E8] bg-[#3D2C51] text-white rounded-4xl hover:bg-[#9C94E8] cursor-pointer"
-              >
-                {loading ? "Processing..." : buttonText}
-              </button>
-            </div>
+            <TextInput label="18. Parent / Guardian's Name" name="parentGuardianName" value={formData.parentGuardianName} onChange={handleChange} readOnly={readOnly} error={errors.parentGuardianName}/>
+            <TextInput label="19. Parent/Guardian Phone Number" name="parentGuardianPhone" value={formData.parentGuardianPhone} onChange={handleChange} readOnly={readOnly} error={errors.parentGuardianPhone}/>
+            <TextInput label="20. Emergency Contact Number" name="emergencyContact" value={formData.emergencyContact} onChange={handleChange} readOnly={readOnly} error={errors.emergencyContact}/>
+            <TextInput label="21. Relationship with Emergency Contact" name="emergencyRelation" value={formData.emergencyRelation} onChange={handleChange} readOnly={readOnly} error={errors.emergencyRelation}/>
+            {!isDetailPage && (
+              <div className="flex justify-between my-10">
+                <button
+                  type="button"
+                  onClick={() => setFormData({ ...defaultForm, ...initialData })}
+                  className="px-6 py-2 bg-[#512C2C] border-3 border-[#FF5A51] rounded-4xl hover:bg-[#FF5A51] cursor-pointer"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="px-6 py-2 border-2 border-[#9C94E8] bg-[#3D2C51] text-white rounded-4xl hover:bg-[#9C94E8] cursor-pointer"
+                >
+                  {loading ? "Processing..." : isEditPage ? "Edit Data" : buttonText}
+                </button>
+              </div>
+            )}
           </div>
         </div>
 
@@ -160,24 +167,6 @@ export default function StaffForm({ initialData = {}, onSubmit, buttonText = "Ad
             return <InputComponent key={key} label={label} name={key} value={value} onChange={handleChange} readOnly={readOnly}/>;
           })}
         </div>
-
-        {/* Buttons */}
-        {/* <div className="flex justify-end gap-90">
-          <button
-            type="button"
-            onClick={() => setFormData({ ...defaultForm, ...initialData })}
-            className="px-6 py-2 bg-[#512C2C] border-3 border-[#FF5A51] rounded-4xl hover:bg-[#FF5A51] cursor-pointer"
-          >
-            Cancel
-          </button>
-          <button
-            type="submit"
-            disabled={loading}
-            className="px-6 py-2 border-2 border-[#9C94E8] bg-[#3D2C51] text-white rounded-4xl hover:bg-[#9C94E8] cursor-pointer"
-          >
-            {loading ? "Processing..." : buttonText}
-          </button>
-        </div> */}
 
         {status && <p className="mt-4 text-center font-medium text-white">{status}</p>}
       </form>

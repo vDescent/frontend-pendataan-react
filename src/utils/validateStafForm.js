@@ -2,26 +2,38 @@ export default function validateStaffForm(formData) {
 
     const errors = {};
 
-    // Full Name
-    if (!formData.fullName.trim()) {
-        errors.fullName = "Please fill this field properly";
-    } else if (!/^[A-Za-z\s]+$/.test(formData.fullName)) {
-        errors.fullName = "Fullname must contain only letters";
+    // contains only letters
+    function validateLettersOnlyField(value, fieldName, fieldLabel) {
+    if (!value.trim()) {
+        return `${fieldLabel} is required.`;
+    } else if (!/^[A-Za-z\s]+$/.test(value)) {
+        return `${fieldLabel} must contain only letters`;
     }
+    return null;
+    }
+
+    function validatePhoneNumber(value, fieldName, fieldLabel) {
+    if (!value.trim()) {
+        return `${fieldLabel} is required.`;
+    } else if (!/^\d+$/.test(value)) {
+        return `${fieldLabel} must contain only digits`;
+    } else if (value.length < 10){
+        return `${fieldLabel} must be at least 10 digits long`;
+    }
+    return null;
+    }
+
+    // Full Name
+    const fullnameError = validateLettersOnlyField(formData.fullName, 'fullName', 'Full Name');
+    if (fullnameError) errors.fullName = fullnameError;
 
     // DOB
     if (!formData.dateOfBirth) {
         errors.dateOfBirth = "Please fill this field properly";
     }
 
-  // PhoneNum
-    if (!formData.phoneNumber) {
-        errors.phoneNumber = "Please fill this field properly";
-    } else if (!/^\d+$/.test(formData.phoneNumber)) {
-        errors.phoneNumber = "Phone number must contain only numbers";
-    } else if (formData.phoneNumber.length < 10) {
-        errors.phoneNumber = "Phone number must be at least 10 digits";
-    }
+    const PhoneNumError = validatePhoneNumber(formData.phoneNumber, 'phoneNumber', 'Phone Number');
+    if(PhoneNumError) errors.phoneNumber = PhoneNumError;
 
   // NIM
     if (!formData.nim) {
@@ -58,9 +70,70 @@ export default function validateStaffForm(formData) {
         errors.binusianStatus = "Please fill this field properly";
     }
 
+    // Start end date
+    const start = new Date(formData.startDate);
+    const end = new Date(formData.endDate);
 
+    if (!formData.startDate) {
+        errors.startDate = "Start date is required";
+    }
 
-  // Tambahkan validasi kolom lain nanti di sini...
+    if (!formData.endDate) {
+        errors.endDate = "End date is required";
+    }
+
+    // Hanya validasi jika keduanya sudah diisi
+    if (formData.startDate && formData.endDate) {
+        if (start >= end) {
+            errors.startDate = "Start date must be before end date";
+            errors.endDate = "End date must be after start date";
+        }
+    }
+
+    // NIK
+    if(formData.nik.length !== 16){
+        errors.nik = "NIK must be 16 digit numbers"
+    }
+
+    // Domisili (address)
+    const addressError = validateLettersOnlyField(formData.address, 'address', 'Address');
+    if (addressError) errors.address = addressError;
+
+    // NPWP
+    if (!formData.npwp) {
+        errors.npwp = "Please fill this field properly";
+    } else if (!/^\d+$/.test(formData.npwp)) {
+        errors.npwp = "NPWP must contain only numbers";
+    } else if (formData.npwp.length !== 15) {
+        errors.npwp = "NPWP must be 15 digits";
+    }
+
+    // BCA Account Number
+    if (!formData.bankAccountNumber) {
+        errors.bankAccountNumber = "Please fill this field properly";
+    } else if (!/^\d+$/.test(formData.bankAccountNumber)) {
+        errors.bankAccountNumber = "Bank Account Number must contain only numbers";
+    } else if (formData.bankAccountNumber.length !== 10) {
+        errors.bankAccountNumber = "Bank Account Number must be 15 digits";
+    }
+
+    const bankBranchError = validateLettersOnlyField(formData.bankBranch, 'bankBranch', 'Bank Branch');
+    if (bankBranchError) errors.bankBranch = bankBranchError;
+
+    const accountHolderError = validateLettersOnlyField(formData.accountHolderName, 'accountHolderName', 'Account Holder Name');
+    if (accountHolderError) errors.accountHolderName = accountHolderError;
+
+    const parentGuardianError = validateLettersOnlyField(formData.parentGuardianName, 'parentGuardianName', 'Parent Guardian Name');
+    if (parentGuardianError) errors.parentGuardianName = parentGuardianError;
+
+    const parentGuardianPhoneError = validatePhoneNumber(formData.parentGuardianPhone, 'parentGuardianPhone', 'Parents Guardian Phone Number');
+    if(parentGuardianPhoneError) errors.parentGuardianPhone = parentGuardianPhoneError;
+
+    const emergencyContactError = validatePhoneNumber(formData.emergencyContact, 'emergencyContact', 'Parents Guardian Phone Number');
+    if(emergencyContactError) errors.emergencyContact = emergencyContactError;
+
+    const emergencyRelationError = validateLettersOnlyField(formData.emergencyRelation, 'emergencyRelation', 'Parents Guardian Phone Number');
+    if(emergencyRelationError) errors.emergencyRelation = emergencyRelationError;
 
   return errors;
 }
