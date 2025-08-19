@@ -150,9 +150,9 @@ export default function DashboardLayout() {
               {/* Role Info */}
               <div className="bg-[#311B4B] rounded-xl p-4 text-sm leading-tight">
                 <div className="text-white text-lg font-normal mb-4">Role</div>
-                <div className="text-white font-bold text-lg">Admin</div>
-                <div className="text-gray-300 text-sm">Staff (Semarang)</div>
-                <div className="text-gray-300 text-sm">BINUS University</div>
+                <div className="text-white font-bold text-sm">Admin</div>
+                <div className="text-gray-300 text-sm font-medium">{user?.name || "Loading..."}</div>
+                <div className="text-gray-300 text-sm"  >BINUS University</div>
               </div>
 
               {/* Nav to page */}
