@@ -1,6 +1,6 @@
 export default function DoubleConfirmModal({
   showStep,
-  data, // optional: bisa isi nama/NIM
+  data, 
   onCancel,
   onFirstConfirm,
   onSecondCancel,

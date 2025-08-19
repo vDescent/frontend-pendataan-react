@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { login } from "../../services/AuthService";
 import { useNavigate, Link } from "react-router-dom";
-// import validateLogin from "../../utils/validateAuth";
 import validateLogin from "../../utils/validateLogin";
 
 export default function Login() {
@@ -26,12 +25,15 @@ export default function Login() {
 
     try {
       setLoading(true);
-      await login(email, password);
+
+      const token = await login(email,password);
+      localStorage.setItem("token", token);
       setLoading(false);
       navigate("/dashboard");
     } catch (err) {
-      alert("Login gagal: " + err.response?.data?.message || err.message);
-      setLoading(false)
+      const backendMessage = err.response?.data || "Terjadi kesalahan saat login.";
+      setErrors({ general: backendMessage });
+      setLoading(false);
     }
   };
 
@@ -68,6 +70,9 @@ export default function Login() {
           </Link>
         </p>
       </form>
+      {errors.general && (
+        <p className="text-red-500 text-sm text-center">{errors.general}</p>
+      )}
     </div>
   );
 }

@@ -2,7 +2,7 @@ export default function validateStaffForm(formData) {
 
     const errors = {};
 
-    // contains only letters
+    // hanya huruf
     function validateLettersOnlyField(value, fieldName, fieldLabel) {
     if (!value.trim()) {
         return `${fieldLabel} is required.`;
@@ -12,6 +12,7 @@ export default function validateStaffForm(formData) {
     return null;
     }
 
+    // validasi untuk nomor hp
     function validatePhoneNumber(value, fieldName, fieldLabel) {
     if (!value.trim()) {
         return `${fieldLabel} is required.`;
@@ -35,7 +36,7 @@ export default function validateStaffForm(formData) {
     const PhoneNumError = validatePhoneNumber(formData.phoneNumber, 'phoneNumber', 'Phone Number');
     if(PhoneNumError) errors.phoneNumber = PhoneNumError;
 
-  // NIM
+    // NIM
     if (!formData.nim) {
         errors.nim = "Please fill this field properly";
     } else if (!/^\d+$/.test(formData.nim)) {
@@ -44,7 +45,7 @@ export default function validateStaffForm(formData) {
         errors.nim = "NIM must be 10 digits";
     }
 
-  // BID
+    // BID
     if (!formData.binusianId) {
         errors.binusianId = "Please fill this field properly";
     } else if (!/^BN\d{9}$/.test(formData.binusianId)) {
@@ -96,8 +97,14 @@ export default function validateStaffForm(formData) {
     }
 
     // Domisili (address)
-    const addressError = validateLettersOnlyField(formData.address, 'address', 'Address');
+    const addressError = !formData.address.trim()
+        ? "Address is required."
+        : !/^[A-Za-z0-9.\s]+$/.test(formData.address)
+        ? "Address can only contain letters, numbers, dots, and spaces."
+        : null;
+
     if (addressError) errors.address = addressError;
+
 
     // NPWP
     if (!formData.npwp) {
@@ -114,24 +121,30 @@ export default function validateStaffForm(formData) {
     } else if (!/^\d+$/.test(formData.bankAccountNumber)) {
         errors.bankAccountNumber = "Bank Account Number must contain only numbers";
     } else if (formData.bankAccountNumber.length !== 10) {
-        errors.bankAccountNumber = "Bank Account Number must be 15 digits";
+        errors.bankAccountNumber = "Bank Account Number must be 10 digits";
     }
 
+    // Bank branch
     const bankBranchError = validateLettersOnlyField(formData.bankBranch, 'bankBranch', 'Bank Branch');
     if (bankBranchError) errors.bankBranch = bankBranchError;
 
+    // account holder name
     const accountHolderError = validateLettersOnlyField(formData.accountHolderName, 'accountHolderName', 'Account Holder Name');
     if (accountHolderError) errors.accountHolderName = accountHolderError;
 
+    // parent guardian name
     const parentGuardianError = validateLettersOnlyField(formData.parentGuardianName, 'parentGuardianName', 'Parent Guardian Name');
     if (parentGuardianError) errors.parentGuardianName = parentGuardianError;
 
+    // parent guardian phone
     const parentGuardianPhoneError = validatePhoneNumber(formData.parentGuardianPhone, 'parentGuardianPhone', 'Parents Guardian Phone Number');
     if(parentGuardianPhoneError) errors.parentGuardianPhone = parentGuardianPhoneError;
 
+    // emergency contact
     const emergencyContactError = validatePhoneNumber(formData.emergencyContact, 'emergencyContact', 'Parents Guardian Phone Number');
     if(emergencyContactError) errors.emergencyContact = emergencyContactError;
 
+    // emergency relation
     const emergencyRelationError = validateLettersOnlyField(formData.emergencyRelation, 'emergencyRelation', 'Parents Guardian Phone Number');
     if(emergencyRelationError) errors.emergencyRelation = emergencyRelationError;
 

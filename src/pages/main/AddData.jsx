@@ -1,10 +1,12 @@
-// pages/AddData.jsx
+import { useState, useMemo } from "react";
 import StaffForm from "../../components/form/staffForm";
 import axios from "axios";
-import { useMemo } from "react";
+import SimpleModal from "../../components/modal/SuccessModal";
 
-// ✅ useMemo untuk mencegah initialData dibuat ulang setiap render
 export default function AddData() {
+  const [modalMessage, setModalMessage] = useState("");
+  const [showModal, setShowModal] = useState(false);
+
   const initialData = useMemo(() => ({
     fullName: "",
     nim: "",
@@ -27,14 +29,22 @@ export default function AddData() {
     emergencyRelation: "",
     startDate: "",
     endDate: "",
-  }), []); // buat sekali
+  }), []);
 
   const handleSubmit = async (data) => {
     try {
       await axios.post("http://localhost:5077/api/staff/add", data);
+      setModalMessage("Berhasil menambahkan data!");
+      setShowModal(true);
     } catch (error) {
       console.error("Gagal submit dari AddData.jsx", error);
-      throw error;
+      if(error.response){
+        setModalMessage(error.response.data.message || "Gagal Menambahkan Data!");
+      } else{
+        setModalMessage("Tidak bisa terhubung ke server")
+      }
+      setShowModal(true);
+      // throw error;
     }
   };
 
@@ -43,6 +53,13 @@ export default function AddData() {
       <h1 className="text-2xl font-thin m-4">Add Data</h1>
       <hr className="border-t border-gray-600 mb-6" />
       <StaffForm initialData={initialData} onSubmit={handleSubmit} />
+
+      {/* modal */}
+      <SimpleModal
+        show={showModal}
+        message={modalMessage}
+        onClose={() => setShowModal(false)}
+      />
     </div>
   );
 }

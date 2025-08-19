@@ -2,6 +2,9 @@ import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import DoubleConfirmModal from "../../components/modal/DoubleConfirm";
+import ActionBtn from "../../components/common/ActionBtn";
+import NoDataFound from "../../components/common/NoDataFound";
+
 
 export default function ManageStaff() {
   const [keywordName, setKeywordName] = useState("");
@@ -12,9 +15,11 @@ export default function ManageStaff() {
   const [staffToTerminate, setStaffToTerminate] = useState(null);
   const [staffToDelete, setStaffToDelete] = useState(null);
   const [deleteStep, setDeleteStep] = useState(0);
+  const [hasSearched, setHasSearched] = useState(false);
   const navigate = useNavigate();
 
   const searchByName = async () => {
+    setHasSearched(true);
     try {
       const res = await axios.get(
         `http://localhost:5077/api/staff/search?keyword=${keywordName}`
@@ -22,11 +27,11 @@ export default function ManageStaff() {
       setResults(res.data);
     } catch (err) {
       alert("Gagal mencari staff");
-      console.error(err);
     }
   };
 
   const searchByNIM = async () => {
+    setHasSearched(true);
     try {
       const res = await axios.get(
         `http://localhost:5077/api/staff/search-nim?nim=${keywordNIM}`
@@ -34,7 +39,6 @@ export default function ManageStaff() {
       setResults(res.data);
     } catch (err) {
       alert("Gagal mencari staff");
-      console.error(err);
     }
   };
 
@@ -44,12 +48,10 @@ export default function ManageStaff() {
       <hr className="border-t border-gray-600 mb-2" />
 
       {/* Search Form */}
-      <div className="flex gap-8 mb-4 p-4">
-        {/* Kolom kiri: Staff Full Name */}
-        <div className="w-1/2">
-          <div className="flex items-center gap-2 mb-2">
-            <p className="text-xl font-thin">Staff Full Name</p>
-          </div>
+      <div className="flex flex-col gap-8 mb-4 p-4 lg:flex-row">
+        {/* Kiri Full Name */}
+        <div className="w-full lg:w-1/2">
+          <p className="text-xl font-thin mb-2">Staff Full Name</p>
           <div className="flex gap-2">
             <input
               type="text"
@@ -67,11 +69,9 @@ export default function ManageStaff() {
           </div>
         </div>
 
-        {/* Kolom kanan: Staff NIM */}
-        <div className="w-1/2">
-          <div className="flex items-center gap-2 mb-2">
-            <p className="text-xl font-thin">Staff NIM</p>
-          </div>
+        {/* Kanan NIM */}
+        <div className="w-full lg:w-1/2">
+          <p className="text-xl font-thin mb-2">Staff NIM</p>
           <div className="flex gap-2">
             <input
               type="text"
@@ -90,76 +90,67 @@ export default function ManageStaff() {
         </div>
       </div>
 
+      {/* Hasil */}
+      {/* Kosong */}
+      {hasSearched && results.length === 0 && (
+        <NoDataFound message="No staff data found" />
+      )}
+
+      {/* Ada */}
       {results.length > 0 && (
-      <div className="mx-4 mt-4 rounded-lg overflow-hidden space-y-4">
-        <div className="bg-[#434045] text-white text-sm p-4">
-          {results.map((staff) => (
-            <div
-              key={staff.id}
-              className="flex items-center justify-between border border-[#9C94E8] rounded-md mb-4"
-            >
-              {/* Info Staff */}
-              <div className="flex flex-col flex-1 ">
-                <div className="flex justify-between text-gray-300 font-medium bg-[#39363B] p-3 border-r border-b border-[#717171]-50">
-                  <div className="w-1/3">Name</div>
-                  <div className="w-1/3">NIM</div>
-                  <div className="w-1/3">Binusian ID</div>
-                  
-                </div>
-                <div className="flex justify-between text-white font-semibold p-3 border-r border-b border-[#717171]-50">
-                  <div className="w-1/3">{staff.fullName}</div>
-                  <div className="w-1/3">{staff.nim}</div>
-                  <div className="w-1/3">{staff.binusianId}</div>
-                </div>
-              </div>
+        <div className="mx-4 mt-4 rounded-lg overflow-hidden space-y-4">
+          <div className="bg-[#434045] text-white text-sm p-4">
+            {results.map((staff) => (
+              <div
+                key={staff.id}
+                className="flex flex-col w-full h-full lg:flex-row items-stretch border border-[#9C94E8] rounded-md mb-4"
+              >
+                {/* Info Staff */}
+                <div className="flex flex-1 flex-col h-full w-full">
+                  <div className="flex justify-between text-gray-300 font-medium bg-[#39363B] p-3 border-b border-[#717171]-50">
+                    <div className="w-1/3 break-words">Name</div>
+                    <div className="w-1/3 break-words">NIM</div>
+                    <div className="w-1/3 break-words">Binusian ID</div>
+                  </div>
+                  <div className="flex justify-between text-white font-semibold p-3 border-b border-[#717171]-50">
+                    <div className="w-1/3 break-words">{staff.fullName}</div>
+                    <div className="w-1/3 break-words">{staff.nim}</div>
+                    <div className="w-1/3 break-words">{staff.binusianId}</div>
+                  </div>
 
-              {/* Tombol Aksi */}
-              <div className="flex pl-6 flex-1 gap-10 mx-4">
-                <button
-                  className="w-28 px-4 py-2 border-2 bg-[#3D2C51] border-[#9C94E8] text-white rounded-full hover:bg-[#9C94E8] cursor-pointer"
-                  onClick={() => navigate(`/dashboard/display-data/${staff.id}`)}
-                >
-                  Details
-                </button>
-                <button
-                  className="w-28 px-4 py-2 border-2 bg-[#3D2C51] border-[#9C94E8] text-white rounded-full hover:bg-[#9C94E8] cursor-pointer"
-                  onClick={() => navigate(`/dashboard/edit-data/${staff.id}`)}
-                >
-                  Edit
-                </button>
-                <button
-                  className="w-28 px-4 py-2 border-2 bg-[#512C2C] border-[#FF5A51] text-white rounded-full hover:bg-[#FF5A51] cursor-pointer"
-                  onClick={() => {
-                    setStaffToDelete(staff);
-                    setDeleteStep(1);
-                  }}
-                >
-                  Delete
-                </button>
-                <button
-                  className={`w-28 px-4 py-2 border-2 rounded-full cursor-pointer 
-                    ${staff.isActive 
-                      ? 'bg-[#512C2C] border-[#FF5A51] hover:bg-[#FF5A51]' // terminate
-                      : 'bg-[#32512C] border-[#76B743] hover:bg-[#76B743]' // unterminate
-                    }`
-                  }
-                  onClick={() => {
-                    setStaffToTerminate(staff);
-                    setActionType(staff.isActive ? "terminate" : "unterminate");
-                    setTerminateStep(1);
-                  }}
-                >
-                  {staff.isActive ? "Terminate" : "Unterminate"}
-                </button>
+                  {/* Tombol Mobile */}
+                  <div className="flex lg:hidden p-4 md:flex justify-evenly">
+                    <ActionBtn
+                      staff={staff}
+                      navigate={navigate}
+                      setStaffToDelete={setStaffToDelete}
+                      setDeleteStep={setDeleteStep}
+                      setStaffToTerminate={setStaffToTerminate}
+                      setActionType={setActionType}
+                      setTerminateStep={setTerminateStep}
+                    />
+                  </div>
+                </div>
+
+                {/* Tombol Desktop */}
+                <div className="hidden lg:flex items-center p-4 w-[400px] xl:w-[500px] shrink-0">
+                  <ActionBtn
+                    staff={staff}
+                    navigate={navigate}
+                    setStaffToDelete={setStaffToDelete}
+                    setDeleteStep={setDeleteStep}
+                    setStaffToTerminate={setStaffToTerminate}
+                    setActionType={setActionType}
+                    setTerminateStep={setTerminateStep}
+                  />
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
-      </div>
-    )}
+      )}
 
-
-
+      {/* Modal terminate */}
       <DoubleConfirmModal
         showStep={terminateStep}
         data={staffToTerminate}
@@ -174,7 +165,6 @@ export default function ManageStaff() {
             await axios.post(
               `http://localhost:5077/api/staff/${actionType}/${staffToTerminate.id}`
             );
-            // alert(`${actionType} berhasil`);
             setTerminateStep(0);
             setStaffToTerminate(null);
             searchByName(); // Refresh
@@ -197,18 +187,19 @@ export default function ManageStaff() {
         onSecondCancel={() => setDeleteStep(1)}
         onSecondConfirm={async () => {
           try {
-            await axios.delete(`http://localhost:5077/api/staff/delete/${staffToDelete.id}`);
+            await axios.delete(
+              `http://localhost:5077/api/staff/delete/${staffToDelete.id}`
+            );
             alert("Data berhasil dihapus");
             setDeleteStep(0);
             setStaffToDelete(null);
-            searchByNIM(); // Refresh data
+            // searchByNIM(); 
           } catch (err) {
             alert("Gagal menghapus data");
           }
         }}
         actionType="delete"
       />
-
     </div>
   );
 }

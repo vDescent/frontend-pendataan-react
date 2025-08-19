@@ -11,11 +11,11 @@ export default function RadioGroup({ label, name, options, selected, onChange, d
           return (
             <label key={opt} className="flex items-center gap-2">
               <div
-                className={`w-7 h-7 rounded-full border-3 flex items-center justify-center
+                className={`w-7 h-7 aspect-square rounded-full border-3 flex items-center justify-center
                   ${isSelected ? "border-[#9C94E8]" : "border-[#d8d8d8]"}
                 `}
               >
-                {isSelected && <div className="w-4 h-4 bg-[#9C94E8] rounded-full" />}
+                {isSelected && <div className="w-4 h-4 aspect-square bg-[#9C94E8] rounded-full" />}
               </div>
               <span className="text-white">{opt}</span>
 

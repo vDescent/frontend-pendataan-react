@@ -1,11 +1,15 @@
 import { useState, useRef } from "react";
 import { FiUpload } from "react-icons/fi";
+import SimpleModal from "../../components/modal/SuccessModal";
 
 export default function UploadExcelPage() {
-  // const [uploadProgress, setUploadProgress] = useState(50);
   const [fileName, setFileName] = useState("");
   const fileInputRef = useRef(null);
   const [selectedFile, setSelectedFile] = useState(null);
+
+  // modal
+  const [showModal, setShowModal] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
 
   const handleBrowseClick = () => {
     fileInputRef.current.click();
@@ -13,7 +17,8 @@ export default function UploadExcelPage() {
 
   const handleUpload = async () => {
     if (!selectedFile) {
-      alert("Please select a file first.");
+      setModalMessage("Silakan pilih file terlebih dahulu.");
+      setShowModal(true);
       return;
     }
 
@@ -28,13 +33,15 @@ export default function UploadExcelPage() {
 
       if (response.ok) {
         const message = await response.text();
-        alert(message);
+        setModalMessage(message || "Data berhasil masuk ke database.");
       } else {
-        alert("Upload failed.");
+        setModalMessage("Data tidak berhasil masuk ke database. Kemungkinan NIM dan Binusian ID sudah ada");
       }
     } catch (error) {
       console.error("Upload error:", error);
-      alert("An error occurred during upload.");
+      setModalMessage("Terjadi kesalahan saat upload.");
+    } finally {
+      setShowModal(true);
     }
   };
 
@@ -42,11 +49,11 @@ export default function UploadExcelPage() {
     <div className="bg-[#2e2b30] text-white rounded-lg border border-[#444]">
       <h1 className="text-2xl font-thin m-4">Upload Excel</h1>
       <hr className="border-t border-gray-600 mb-6" />
-      <div></div>
+
       <h1 className="text-2xl font-bold m-4">Upload Excel File</h1>
       <div className="border-2 border-dashed border-purple-400 rounded-lg p-12 flex flex-col items-center justify-center bg-[#434045] m-4">
         <FiUpload className="w-20 h-20 text-[#9C94E8] mb-2" />
-        <p className="text-lg mb-2">Drag and Drop File to Upload</p>
+        <p className="text-lg mb-2">Choose File to Upload</p>
         <p className="text-sm mb-4 text-gray-400">or</p>
         <button
           onClick={handleBrowseClick}
@@ -89,19 +96,12 @@ export default function UploadExcelPage() {
         </p>
       </div>
 
-      {/* <div className="bg-[#1f1d23] rounded-md p-4 flex items-center justify-between">
-        <div className="flex items-center space-x-2">
-          <div className="text-purple-300">⏳</div>
-          <span className="text-sm">{fileName}</span>
-        </div>
-        <div className="flex items-center space-x-4 w-1/2">
-          <div className="w-full bg-gray-700 h-2 rounded">
-            <div className="bg-purple-400 h-2 rounded" style={{ width: `${uploadProgress}%` }}></div>
-          </div>
-          <span className="text-sm text-purple-300">{uploadProgress}%</span>
-          <button className="text-red-400 text-xl hover:text-red-600">✖</button>
-        </div>
-      </div> */}
+      {/* Modal */}
+      <SimpleModal
+        show={showModal}
+        message={modalMessage}
+        onClose={() => setShowModal(false)}
+      />
     </div>
   );
 }

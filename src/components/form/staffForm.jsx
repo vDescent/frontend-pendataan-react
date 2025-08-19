@@ -34,7 +34,6 @@ export default function StaffForm({ initialData = {}, onSubmit, buttonText = "Ad
   
   const [errors, setErrors] = useState({});
   const [formData, setFormData] = useState(defaultForm);
-  const [status, setStatus] = useState("");
   const [loading, setLoading] = useState(false);
   const location = useLocation();
   const isDetailPage = location.pathname.includes("display-data");
@@ -51,24 +50,20 @@ export default function StaffForm({ initialData = {}, onSubmit, buttonText = "Ad
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setStatus("");
+    // setStatus("");
 
     const validationErrors = validateStaffForm(formData);
     setErrors(validationErrors);
 
     if (Object.keys(validationErrors).length > 0) {
-      setStatus("Form tidak valid. Silakan cek kembali.");
       return;
     }
 
     setLoading(true);
     try {
       await onSubmit(formData);
-      setStatus("Data berhasil ditambahkan!");
-      // setFormData({ ...defaultForm, ...initialData });
     } catch (err) {
       console.error(err);
-      setStatus("Gagal menambahkan data: " + (err.response?.data?.message || err.message));
     } finally {
       setLoading(false);
     }
@@ -76,12 +71,10 @@ export default function StaffForm({ initialData = {}, onSubmit, buttonText = "Ad
 
   return (
     <div className="">
-      <form onSubmit={handleSubmit} className="bg-[#2e2b30] text-white rounded-lg mx-6 space-y-6">
-        {/* <h2 className="text-2xl font-semibold mb-4">Staff Data Form</h2> */}
-        {/* MAIN WRAPPER GRID: dua kolom dengan garis vertikal lurus */}
-        <div className="hidden md:grid md:grid-cols-2 md:divide-x md:gap-6">
+      <form onSubmit={handleSubmit} className="bg-[#2e2b30] text-white rounded-lg mx-4 p-4 sm:p-6 space-y-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 md:divide-x md:gap-8">
           {/* LEFT COLUMN */}
-          <div className="pr-6 space-y-6">
+          <div className="space-y-6 md:pr-6">
             <p className="text-xl mb-2 font-medium">GENERAL Data</p>
             <TextInput label="1. Full Name" name="fullName" value={formData.fullName} onChange={handleChange} readOnly={readOnly} error={errors.fullName}/>
             <DateInput label="2. Birth Date" name="dateOfBirth" value={formData.dateOfBirth} onChange={handleChange} readOnly={readOnly} error={errors.dateOfBirth}/>
@@ -94,30 +87,43 @@ export default function StaffForm({ initialData = {}, onSubmit, buttonText = "Ad
             <TextInput label="7. Email Address (binus.edu or binus.ac.id for those who don't have one)" name="email" value={formData.email} onChange={handleChange} readOnly={readOnly} error={errors.email}/>
             <TextInput label="8. Active Semester (Counting Even Semester Period - February)" name="activeSemester" value={formData.activeSemester} onChange={handleChange} readOnly={readOnly} error={errors.activeSemester}/>
             <div className="flex flex-row">
-            {/* bagian kiri */}
-            <div className="flex flex-col">
-              <RadioGroup label="9. Binusian Status" name="binusianStatus" options={["Associate Member (AM)", "Associate Member (AM) / Junior Staff under", "Non-Associate Member (Non-AM)"]} selected={formData.binusianStatus} onChange={handleChange} direction="column" readOnly={readOnly} error={errors.binusianStatus}/>
-              <DateInput label="10. Start Date" name="startDate" value={formData.startDate} onChange={handleChange} readOnly={readOnly} error={errors.startDate}/>
-              <DateInput label="11. End Date" name="endDate" value={formData.endDate} onChange={handleChange} readOnly={readOnly} error={errors.endDate}/>
-            </div>
-            {/* bagian kanan */}
-            <div className="bg-[#434045] p-5 flex flex-col flex-1/2 text-justify rounded-2xl">
-              <div className="flex justify-end">
-                <IoInformationCircle className="size-8 fill-[#9C94E8]"/>
+              {/* bagian kiri */}
+              <div className="flex flex-col lg:flex-row gap-4">
+                <div className="flex-1">
+                  <RadioGroup label="9. Binusian Status" name="binusianStatus" options={["Associate Member (AM)", "Associate Member (AM) / Junior Staff under", "Non-Associate Member (Non-AM)"]} selected={formData.binusianStatus} onChange={handleChange} direction="column" readOnly={readOnly} error={errors.binusianStatus}/>
+                  {/* Lg kebawah */}
+                  <div className="block lg:hidden bg-[#434045] p-4 rounded-2xl text-sm">
+                    <div className="flex justify-end">
+                      <IoInformationCircle className="size-6 fill-[#9C94E8]" />
+                    </div>
+                    <p>AM = Bekerja di IT Div sebagai Associate Member</p>
+                    <br />
+                    <p>AM / Junior Staff = Bekerja under Software House sebagai Associate Member atau Junior Staff</p>
+                    <br />
+                    <p>Non-AM = bukan bagian dari IT Div sebagai Associate Member (AM) maupun Junior Staff</p>
+                  </div>
+                  <DateInput label="10. Start Date" name="startDate" value={formData.startDate} onChange={handleChange} readOnly={readOnly} error={errors.startDate}/>
+                  <DateInput label="11. End Date" name="endDate" value={formData.endDate} onChange={handleChange} readOnly={readOnly} error={errors.endDate}/>
+                </div>
+                {/* ketika lg keatas */}
+                <div className="hidden lg:block bg-[#434045] p-4 rounded-2xl xl:w-1/2 text-sm">
+                  <div className="flex justify-end">
+                    <IoInformationCircle className="size-6 fill-[#9C94E8]" />
+                  </div>
+                  <p>AM = Bekerja di IT Div sebagai Associate Member</p>
+                  <br />
+                  <p>AM / Junior Staff = Bekerja under Software House sebagai Associate Member atau Junior Staff</p>
+                  <br />
+                  <p>Non-AM = bukan bagian dari IT Div sebagai Associate Member (AM) maupun Junior Staff</p>
+                </div>
               </div>
-              <p>AM = Bekerja di IT Div sebagai Associate Member</p>
-              <br />
-              <p>AM / Junior Staff = Bekerja under Software House sebagai Associate Member atau Junior Staff</p>
-              <br />
-              <p>Non-AM = bukan bagian dari IT Div sebagai Associate Member (AM) maupun Junior Staff</p>
-            </div>
             </div>
             {/* <DateInput label="10. Start Date" name="startDate" value={formData.startDate} onChange={handleChange} readOnly={readOnly}/>
             <DateInput label="11. End Date" name="endDate" value={formData.endDate} onChange={handleChange} readOnly={readOnly}/> */}
           </div>
 
           {/* RIGHT COLUMN */}
-          <div className="pl-6 space-y-6">
+          <div className="space-y-6 md:pl-6 mt-6 md:mt-0">
             {/* <h3 className="text-lg font-semibold invisible">Spacer</h3>  */}
             <p className="text-xl mb-2 font-medium">Legal / Citizen Data</p>
             <TextInput label="12. Nomor Induk Kewarganegaraan (NIK) KTP " name="nik" value={formData.nik} onChange={handleChange} readOnly={readOnly} error={errors.nik}/>
@@ -133,7 +139,7 @@ export default function StaffForm({ initialData = {}, onSubmit, buttonText = "Ad
             <TextInput label="20. Emergency Contact Number" name="emergencyContact" value={formData.emergencyContact} onChange={handleChange} readOnly={readOnly} error={errors.emergencyContact}/>
             <TextInput label="21. Relationship with Emergency Contact" name="emergencyRelation" value={formData.emergencyRelation} onChange={handleChange} readOnly={readOnly} error={errors.emergencyRelation}/>
             {!isDetailPage && (
-              <div className="flex justify-between my-10">
+              <div className="flex flex-col sm:flex-row sm:justify-between gap-4 pt-4">
                 <button
                   type="button"
                   onClick={() => setFormData({ ...defaultForm, ...initialData })}
@@ -152,23 +158,6 @@ export default function StaffForm({ initialData = {}, onSubmit, buttonText = "Ad
             )}
           </div>
         </div>
-
-        {/* MOBILE VERSION: 1 kolom */}
-        <div className="md:hidden space-y-6">
-          {Object.entries(formData).map(([key, value]) => {
-            if (key === "gender") {
-              return <RadioGroup key={key} label={key} name={key} options={["Male", "Female"]} selected={value} onChange={handleChange} readOnly={readOnly}/>;
-            }
-            const isDateField = ["dateOfBirth", "startDate", "endDate"].includes(key);
-            const label = key
-              .replace(/([A-Z])/g, " $1")
-              .replace(/^./, (str) => str.toUpperCase());
-            const InputComponent = isDateField ? DateInput : TextInput;
-            return <InputComponent key={key} label={label} name={key} value={value} onChange={handleChange} readOnly={readOnly}/>;
-          })}
-        </div>
-
-        {status && <p className="mt-4 text-center font-medium text-white">{status}</p>}
       </form>
     </div>
   );

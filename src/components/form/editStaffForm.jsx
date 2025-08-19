@@ -73,7 +73,7 @@ export default function EditStaffForm({
           disabled={loading}
           className="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700"
         >
-          {loading ? "Menyimpan..." : "Simpan Perubahan"}
+          {loading ? "Loading..." : "Simpan Perubahan"}
         </button>
       </div>
 

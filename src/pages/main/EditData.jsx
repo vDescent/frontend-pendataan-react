@@ -1,18 +1,19 @@
-// pages/EditData.jsx
 import { useParams } from "react-router-dom";
 import { useState, useEffect, useMemo } from "react";
 import axios from "axios";
 import StaffForm from "../../components/form/staffForm";
+import SimpleModal from "../../components/modal/SuccessModal";
 
 export default function EditData() {
   const { id } = useParams();
   const [initialData, setInitialData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [showModal, setShowModal] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
 
-  // Format tanggal agar cocok dengan input type="date"
   const formatDate = (date) => (date ? date.substring(0, 10) : "");
 
-  // Ambil data staff berdasarkan ID
+  // Ambil data sesuaiID
   useEffect(() => {
     const fetchStaff = async () => {
       try {
@@ -38,8 +39,11 @@ export default function EditData() {
   const handleSubmit = async (data) => {
     try {
       await axios.put(`http://localhost:5077/api/staff/edit/${id}`, data);
+      setModalMessage("Data berhasil diupdate"); 
+      setShowModal(true); 
     } catch (error) {
-      console.error("Gagal submit dari EditData.jsx", error);
+      setModalMessage("Gagal mengupdate data"); 
+      setShowModal(true);
       throw error;
     }
   };
@@ -51,6 +55,11 @@ export default function EditData() {
       <h1 className="text-2xl font-thin m-4">Edit Data</h1>
       <hr className="border-t border-gray-600 mb-6" />
       <StaffForm initialData={initialData} onSubmit={handleSubmit} />
+      <SimpleModal
+        show={showModal}
+        message={modalMessage}
+        onClose={() => setShowModal(false)}
+      />
     </div>
   );
 }

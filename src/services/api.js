@@ -9,7 +9,7 @@ const api = axios.create({
   },
 });
 
-// Tambahkan token otomatis jika ada
+// tambah token otomatis jika ada
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("token");

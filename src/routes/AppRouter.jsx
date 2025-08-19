@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import Login from "../pages/auth/Login";
 import Register from "../pages/auth/Register";
 import Dashboard from "../pages/main/Dashboard";
@@ -13,38 +13,33 @@ import ProtectedRoute from "./ProtectedRoute";
 
 export default function AppRouter() {
   return (
-    <BrowserRouter>
-      <Routes>
-        {/* Public Routes */}
-        <Route element={<AuthLayout />}>
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-        </Route>
+    <Routes>
+      {/* Public routes */}
+      <Route element={<AuthLayout />}>
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+      </Route>
 
-        {/* Protected Routes */}
-        <Route
-          path="/dashboard"
-          element={
-            <ProtectedRoute>
-              <DashboardLayout />
-            </ProtectedRoute>
-          }
-        >
-          {/* Default dashboard page */}
-          <Route index element={<Dashboard />} />
+      {/* Protected routes */}
+      <Route
+        path="/dashboard"
+        element={
+          <ProtectedRoute>
+            <DashboardLayout />
+          </ProtectedRoute>
+        }
+      >
+        <Route index element={<Dashboard />} />
+        <Route path="upload" element={<UploadExcel />} />
+        <Route path="add-data" element={<AddData />} />
+        <Route path="manage" element={<ManageStaff />} />
+        <Route path="display-data/:id" element={<DisplayData />} />
+        <Route path="edit-data/:id" element={<EditData />} />
+      </Route>
 
-          {/* Nested inside /dashboard */}
-          <Route path="upload" element={<UploadExcel />} />
-          <Route path="add-data" element={<AddData />} />
-          <Route path="manage" element={<ManageStaff />} />
-          <Route path="display-data/:id" element={<DisplayData />} />
-          <Route path="edit-data/:id" element={<EditData />} />
-        </Route>
-
-        {/* Redirect unknown routes to login */}
-        <Route path="/" element={<Navigate to="/dashboard" replace />} />
-        <Route path="*" element={<Navigate to="/login" replace />} />
-      </Routes>
-    </BrowserRouter>
+      {/* Unknown routes */}
+      <Route path="/" element={<Navigate to="/dashboard" replace />} />
+      <Route path="*" element={<Navigate to="/login" replace />} />
+    </Routes>
   );
 }
