@@ -26,7 +26,7 @@ export default function ManageStaff() {
       );
       setResults(res.data);
     } catch (err) {
-      alert("Gagal mencari staff");
+      // alert("Gagal mencari staff");
     }
   };
 
@@ -38,7 +38,7 @@ export default function ManageStaff() {
       );
       setResults(res.data);
     } catch (err) {
-      alert("Gagal mencari staff");
+      // alert("Gagal mencari staff");
     }
   };
 
@@ -190,12 +190,12 @@ export default function ManageStaff() {
             await axios.delete(
               `http://localhost:5077/api/staff/delete/${staffToDelete.id}`
             );
-            alert("Data berhasil dihapus");
+            // alert("Data berhasil dihapus");
             setDeleteStep(0);
             setStaffToDelete(null);
             // searchByNIM(); 
           } catch (err) {
-            alert("Gagal menghapus data");
+            // alert("Gagal menghapus data");
           }
         }}
         actionType="delete"
